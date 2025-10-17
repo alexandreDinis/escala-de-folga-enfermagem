@@ -48,7 +48,7 @@ public class ColaboradorService {
 
 
     public Page<ColaboradorResponseDTO> listar(Pageable pageable) {
-        return colaboradorRepository.findAll(pageable).map(ColaboradorResponseDTO::new);
+        return colaboradorRepository.findByAtivoTrue(pageable).map(ColaboradorResponseDTO::new);
     }
 
 
