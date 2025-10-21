@@ -1,12 +1,12 @@
 package com.oroboros.EscalaDeFolga.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.oroboros.EscalaDeFolga.dto.AuditoriaInfoDTO;
-import com.oroboros.EscalaDeFolga.dto.ColaboradorInputDTO;
-import com.oroboros.EscalaDeFolga.dto.ColaboradorResponseDTO;
-import com.oroboros.EscalaDeFolga.dto.ColaboradorUpdateDTO;
-import com.oroboros.EscalaDeFolga.model.AcaoAuditoriaEnum;
-import com.oroboros.EscalaDeFolga.model.Colaborador;
+import com.oroboros.EscalaDeFolga.dto.colaborador.AuditoriaInfoDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorInputDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorResponseDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorUpdateDTO;
+import com.oroboros.EscalaDeFolga.model.colaborador.AcaoAuditoriaEnum;
+import com.oroboros.EscalaDeFolga.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.repository.AuditoriaColaboradorRepository;
 import com.oroboros.EscalaDeFolga.repository.ColaboradorRepository;
 import com.oroboros.EscalaDeFolga.util.JsonUtil;

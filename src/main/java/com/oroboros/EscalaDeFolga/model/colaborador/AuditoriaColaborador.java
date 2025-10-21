@@ -1,4 +1,4 @@
-package com.oroboros.EscalaDeFolga.model;
+package com.oroboros.EscalaDeFolga.model.colaborador;
 
 import jakarta.persistence.*;
 import lombok.*;

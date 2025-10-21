@@ -1,4 +1,4 @@
-package com.oroboros.EscalaDeFolga.dto;
+package com.oroboros.EscalaDeFolga.dto.colaborador;
 
 public record AuditoriaInfoDTO(
         Long usuarioId,

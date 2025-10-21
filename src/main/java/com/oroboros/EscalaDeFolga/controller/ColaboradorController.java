@@ -1,10 +1,10 @@
 package com.oroboros.EscalaDeFolga.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.oroboros.EscalaDeFolga.dto.AuditoriaInfoDTO;
-import com.oroboros.EscalaDeFolga.dto.ColaboradorInputDTO;
-import com.oroboros.EscalaDeFolga.dto.ColaboradorResponseDTO;
-import com.oroboros.EscalaDeFolga.dto.ColaboradorUpdateDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.AuditoriaInfoDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorInputDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorResponseDTO;
+import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorUpdateDTO;
 import com.oroboros.EscalaDeFolga.service.ColaboradorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

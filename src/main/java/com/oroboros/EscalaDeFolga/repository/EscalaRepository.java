@@ -1,6 +1,6 @@
 package com.oroboros.EscalaDeFolga.repository;
 
-import com.oroboros.EscalaDeFolga.model.Escala;
+import com.oroboros.EscalaDeFolga.model.escala.Escala;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

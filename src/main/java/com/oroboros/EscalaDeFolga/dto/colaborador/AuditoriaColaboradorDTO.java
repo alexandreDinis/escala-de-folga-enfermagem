@@ -1,8 +1,8 @@
-package com.oroboros.EscalaDeFolga.dto;
+package com.oroboros.EscalaDeFolga.dto.colaborador;
 
 
-import com.oroboros.EscalaDeFolga.model.AcaoAuditoriaEnum;
-import com.oroboros.EscalaDeFolga.model.AuditoriaColaborador;
+import com.oroboros.EscalaDeFolga.model.colaborador.AcaoAuditoriaEnum;
+import com.oroboros.EscalaDeFolga.model.colaborador.AuditoriaColaborador;
 
 import java.time.LocalDateTime;
 

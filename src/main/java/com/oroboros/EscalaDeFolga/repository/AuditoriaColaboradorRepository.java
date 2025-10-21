@@ -1,6 +1,6 @@
 package com.oroboros.EscalaDeFolga.repository;
 
-import com.oroboros.EscalaDeFolga.model.AuditoriaColaborador;
+import com.oroboros.EscalaDeFolga.model.colaborador.AuditoriaColaborador;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

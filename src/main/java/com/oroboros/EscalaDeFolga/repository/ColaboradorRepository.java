@@ -1,6 +1,6 @@
 package com.oroboros.EscalaDeFolga.repository;
 
-import com.oroboros.EscalaDeFolga.model.Colaborador;
+import com.oroboros.EscalaDeFolga.model.colaborador.Colaborador;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
