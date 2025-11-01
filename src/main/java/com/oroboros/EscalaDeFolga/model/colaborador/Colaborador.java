@@ -27,6 +27,9 @@ public class Colaborador {
     private TurnoEnum turno;
 
     boolean ativo = true;
+    private int sabadosFolgaNoMes;
+    private int domingosFolgaNoMes;
+    private LocalDate dataUltimoTrabalho;
 
 
     // ✅ NOVO: Histórico para regra dos 7 dias
@@ -35,20 +38,6 @@ public class Colaborador {
         // Será calculado via service
         return null;
     }
-
-    // ✅ NOVO: Controle de fins de semana no mês
-    private int sabadosFolgaNoMes;
-    private int domingosFolgaNoMes;
-
-    // ✅ NOVO: Data do último trabalho para regra dos 4-7 dias
-    private LocalDate dataUltimoTrabalho;
-
-
-
-
-
-
-
 
     public Colaborador(ColaboradorInputDTO colaborador) {
         this.nome = colaborador.nome();
