@@ -55,5 +55,10 @@ public class EscalaRegrasService {
         return numeroSabados == 5 ? 6 : 5;
     }
 
+    /** cria metodo que conta quantos colaboradores tem, verifica quantas folgas serao dadas no mês
+     * e retorna a media de colaboradores que podem folgar no dia.
+     */
+
+
 }
 
