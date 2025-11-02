@@ -1,5 +1,6 @@
 HELP.md
 .env
+/src/main/java/com/oroboros/EscalaDeFolga/config/DataLoader.java
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
