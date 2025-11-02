@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -28,5 +28,4 @@ public class EscalaColaborador {
 
     @Enumerated(EnumType.STRING)
     private TurnoEnum turno;
-
 }
