@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -22,5 +22,4 @@ public class Escala {
     @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL)
     private List<EscalaColaborador> registros;
 
-    // getters e setters
 }
