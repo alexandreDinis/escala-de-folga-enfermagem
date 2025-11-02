@@ -27,12 +27,11 @@ public class Colaborador {
     private TurnoEnum turno;
 
     boolean ativo = true;
-    private int sabadosFolgaNoMes;
     private int domingosFolgaNoMes;
     private LocalDate dataUltimoTrabalho;
 
 
-    // ✅ NOVO: Histórico para regra dos 7 dias
+    // ✅ NOVO: Histórico para regra dos 6 dias
     @Transient // Não persiste, calcula na hora
     public LocalDate getUltimaFolga() {
         // Será calculado via service
