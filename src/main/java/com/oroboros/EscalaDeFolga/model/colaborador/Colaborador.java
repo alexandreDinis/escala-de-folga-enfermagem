@@ -3,10 +3,12 @@ package com.oroboros.EscalaDeFolga.model.colaborador;
 
 import com.oroboros.EscalaDeFolga.dto.colaborador.ColaboradorInputDTO;
 import com.oroboros.EscalaDeFolga.model.CargoEnum;
+import com.oroboros.EscalaDeFolga.model.escala.Folga;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -29,6 +31,9 @@ public class Colaborador {
     boolean ativo = true;
     private int domingosFolgaNoMes;
     private LocalDate dataUltimoTrabalho;
+
+    @OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL)
+    private List<Folga> folgas;
 
 
     // ✅ NOVO: Histórico para regra dos 6 dias

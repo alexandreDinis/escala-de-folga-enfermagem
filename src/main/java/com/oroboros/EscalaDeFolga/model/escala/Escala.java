@@ -22,4 +22,7 @@ public class Escala {
     @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL)
     private List<EscalaColaborador> registros;
 
+    @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL)
+    private List<Folga> folgas;
+
 }
