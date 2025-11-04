@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EscalaRepository extends JpaRepository<Escala, Long> {
-    // Consultas customizadas:
-    // List<Escala> findByMes(int mes);
+
+    boolean existsByMesAndAno(int mes, int ano);
 }
