@@ -2,7 +2,7 @@ package com.oroboros.EscalaDeFolga;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import com.oroboros.EscalaDeFolga.service.EscalaRegrasService;
+import com.oroboros.EscalaDeFolga.domain.service.EscalaRegrasService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
