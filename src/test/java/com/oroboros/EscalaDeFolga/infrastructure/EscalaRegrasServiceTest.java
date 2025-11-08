@@ -1,4 +1,4 @@
-package com.oroboros.EscalaDeFolga;
+package com.oroboros.EscalaDeFolga.infrastructure;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
