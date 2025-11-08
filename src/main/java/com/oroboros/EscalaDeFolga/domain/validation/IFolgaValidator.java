@@ -4,6 +4,6 @@ import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 
 public interface IFolgaValidator {
 
-    boolean validarFolga(Folga folga);
+    ResultadoValidacao validar(Folga folga);
 
 }

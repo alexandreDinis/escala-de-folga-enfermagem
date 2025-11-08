@@ -38,15 +38,18 @@ public class ValidaLimiteDeFolgas implements IFolgaValidator{
      */
 
     @Override
-    public boolean validarFolga(Folga folga) {
-
+    public ResultadoValidacao validar(Folga folga) {
         Escala escala = folga.getEscala();
-
-        long totalFolga = folgaRepository.countByColaboradorAndEscalaAndStatusIn(
+        long total = folgaRepository.countByColaboradorAndEscalaAndStatusIn(
                 folga.getColaborador(),
                 escala,
-                List.of(StatusFolgaEnum.PENDENTE, StatusFolgaEnum.APROVADA));
+                List.of(StatusFolgaEnum.PENDENTE, StatusFolgaEnum.APROVADA)
+        );
 
-        return totalFolga < escala.getFolgasPermitidas();
+        if (total >= escala.getFolgasPermitidas()) {
+            return ResultadoValidacao.erro("O colaborador já atingiu o limite de folgas para esta escala.");
+        }
+
+        return ResultadoValidacao.ok();
     }
 }

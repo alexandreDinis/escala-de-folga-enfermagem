@@ -2,7 +2,6 @@ package com.oroboros.EscalaDeFolga.domain.validation;
 
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
-import com.oroboros.EscalaDeFolga.domain.model.escala.EscalaColaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.FolgaRepository;
@@ -15,8 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ValidaLimiteDeFolgasTest {
@@ -28,18 +26,12 @@ public class ValidaLimiteDeFolgasTest {
     private ValidaLimiteDeFolgas validaLimiteDeFolgas;
 
     private Folga folga;
-
     private Escala escala;
 
-    private EscalaColaborador escalaColaborador;
-
-    private static final List<StatusFolgaEnum> STATUS_VALIDOS =
-            List.of(StatusFolgaEnum.PENDENTE, StatusFolgaEnum.APROVADA);
-
-
     @BeforeEach
-    void setUp(){
+    void setUp() {
         MockitoAnnotations.openMocks(this);
+
         Colaborador colaborador = new Colaborador();
         colaborador.setId(1L);
 
@@ -52,36 +44,34 @@ public class ValidaLimiteDeFolgasTest {
     }
 
     @Test
-    void deveRetornarTrueSePedidoDeFolgaForMenorQueFolgasPermitidas(){
+    void deveRetornarErroSeColaboradorUltrapassarLimiteDeFolgas() {
+        // given
         when(folgaRepository.countByColaboradorAndEscalaAndStatusIn(
-                folga.getColaborador(),folga.getEscala(),
-                STATUS_VALIDOS))
-                .thenReturn(5L);
+                folga.getColaborador(), folga.getEscala(),
+                List.of(StatusFolgaEnum.PENDENTE, StatusFolgaEnum.APROVADA)))
+                .thenReturn(10L);
 
-        boolean result = validaLimiteDeFolgas.validarFolga(folga);
+        // when
+        ResultadoValidacao resultado = validaLimiteDeFolgas.validar(folga);
 
-        assertTrue(result, "Deve retornar true se pedido de folga for menor que folgas permitidas");
-        verify(folgaRepository, times(1))
-                .countByColaboradorAndEscalaAndStatusIn(
-                folga.getColaborador(),folga.getEscala(),
-                        STATUS_VALIDOS);
+        // then
+        assertFalse(resultado.isValido());
+        assertEquals("O colaborador já atingiu o limite de folgas para esta escala.", resultado.getMensagem());
     }
 
     @Test
-    void deveRetornarFalseSePedidoDeFolgaForMaiorQueFolgasPermitidas(){
+    void deveRetornarOkSeAindaEstiverDentroDoLimite() {
+        // given
         when(folgaRepository.countByColaboradorAndEscalaAndStatusIn(
                 folga.getColaborador(), folga.getEscala(),
-                STATUS_VALIDOS))
-                .thenReturn(6L);
+                List.of(StatusFolgaEnum.PENDENTE, StatusFolgaEnum.APROVADA)))
+                .thenReturn(4L);
 
-        boolean result = validaLimiteDeFolgas.validarFolga(folga);
+        // when
+        ResultadoValidacao resultado = validaLimiteDeFolgas.validar(folga);
 
-        assertFalse(result, "Deve retornar falso se o pedido de folga for Maior que folgas permitidas");
-
-        verify(folgaRepository, times(1))
-                .countByColaboradorAndEscalaAndStatusIn(
-                        folga.getColaborador(),folga.getEscala(),
-                        STATUS_VALIDOS);
-
+        // then
+        assertTrue(resultado.isValido());
+        assertEquals("Folga válida.", resultado.getMensagem());
     }
 }

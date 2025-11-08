@@ -21,30 +21,6 @@ public class EscalaRegrasServiceTest {
         service = new EscalaRegrasService();
     }
 
-//    @Test
-//    void testCalculaMediaDeFolgaPorDia() {
-//        int colaboradores = 37;
-//        int[] diasDoMes = {31, 28, 30}; // Janeiro, Fevereiro, Março
-//        int[] quantidadeFolgasOpcoes = {5, 6};
-//
-//        String[] meses = {"Janeiro", "Fevereiro", "Março"};
-//
-//        for (int i = 0; i < diasDoMes.length; i++) {
-//            int qtddDias = diasDoMes[i];
-//            String mes = meses[i];
-//
-//            for (int qtddDomingos : quantidadeFolgasOpcoes) {
-//                System.out.println("=== Mês: " + mes + ", Colaboradores: " + colaboradores + ", Quantidade de Folgas: " + qtddDomingos + " ===");
-//
-//                int folgasDomingos = service.calculaMediaDeFolgaPorDia(qtddDias, colaboradores, qtddDomingos, DayOfWeek.SUNDAY,6);
-//                int folgasSemana = service.calculaMediaDeFolgaPorDia(qtddDias, colaboradores, qtddDomingos, DayOfWeek.MONDAY,6);
-//
-//                System.out.println("Folgas por Domingo: " + folgasDomingos);
-//                System.out.println("Folgas por dia restante: " + folgasSemana);
-//                System.out.println();
-//            }
-//        }
-//    }
 
     @Test
     void testCalculaMediaDeFolgaPorDia() {
@@ -103,5 +79,4 @@ public class EscalaRegrasServiceTest {
             }
         }
     }
-
 }

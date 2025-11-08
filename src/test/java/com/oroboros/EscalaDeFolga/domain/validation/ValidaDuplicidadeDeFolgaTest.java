@@ -12,8 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -30,35 +29,44 @@ public class ValidaDuplicidadeDeFolgaTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
         Colaborador colaborador = new Colaborador();
         colaborador.setId(1L);
+
         folga = new Folga();
         folga.setColaborador(colaborador);
-        folga.setDataSolicitada(LocalDate.of(2025,12, 1));
+        folga.setDataSolicitada(LocalDate.of(2025, 11, 5));
     }
 
     @Test
-    void devoRetornarTrueQuandoNaoExistirFolgaDubplicada() {
-        when(folgaRepository.existsByColaboradorAndDataSolicitada(
-                folga.getColaborador(), folga.getDataSolicitada()
-        )).thenReturn(false);
+    void deveRetornarErroQuandoJaExistirFolgaNaMesmaData() {
+        // given
+        when(folgaRepository.existsByColaboradorAndDataSolicitada(folga.getColaborador(), folga.getDataSolicitada()))
+                .thenReturn(true);
 
-        boolean result = validaDuplicidadeDeFolga.validarFolga(folga);
+        // when
+        ResultadoValidacao resultado = validaDuplicidadeDeFolga.validar(folga);
 
-        assertTrue(result, "Deve retornar True quando não existir folga duplicada");
+        // then
+        assertFalse(resultado.isValido());
+        assertEquals("Já existe uma folga cadastrada para essa data.", resultado.getMensagem());
+
         verify(folgaRepository, times(1))
                 .existsByColaboradorAndDataSolicitada(folga.getColaborador(), folga.getDataSolicitada());
-
     }
+
     @Test
-    void deveretornarFalseQuandoExistirUmaFolgaDuplocada(){
-        when(folgaRepository.existsByColaboradorAndDataSolicitada(
-                folga.getColaborador(), folga.getDataSolicitada()
-        )).thenReturn(true);
+    void deveRetornarOkQuandoNaoExistirFolgaDuplicada() {
+        // given
+        when(folgaRepository.existsByColaboradorAndDataSolicitada(folga.getColaborador(), folga.getDataSolicitada()))
+                .thenReturn(false);
 
-        boolean result = validaDuplicidadeDeFolga.validarFolga(folga);
+        // when
+        ResultadoValidacao resultado = validaDuplicidadeDeFolga.validar(folga);
 
-        assertFalse(result, "Deve retornar false quando ouver folga duplicada");
+        // then
+        assertTrue(resultado.isValido());
+        assertEquals("Folga válida.", resultado.getMensagem());
 
         verify(folgaRepository, times(1))
                 .existsByColaboradorAndDataSolicitada(folga.getColaborador(), folga.getDataSolicitada());

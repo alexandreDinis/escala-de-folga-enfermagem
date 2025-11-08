@@ -38,10 +38,15 @@ public class ValidaDuplicidadeDeFolga implements IFolgaValidator {
      * @return {@code true} se não houver duplicidade de folga, {@code false} caso já exista
      */
     @Override
-    public boolean validarFolga(Folga folga) {
-        return !folgaRepository.existsByColaboradorAndDataSolicitada(
-                folga.getColaborador(),
-                folga.getDataSolicitada()
+    public ResultadoValidacao validar(Folga folga) {
+        boolean existe = folgaRepository.existsByColaboradorAndDataSolicitada(
+                folga.getColaborador(), folga.getDataSolicitada()
         );
+
+        if (existe) {
+            return ResultadoValidacao.erro("Já existe uma folga cadastrada para essa data.");
+        }
+
+        return ResultadoValidacao.ok();
     }
 }
