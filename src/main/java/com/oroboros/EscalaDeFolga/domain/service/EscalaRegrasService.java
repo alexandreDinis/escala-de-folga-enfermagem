@@ -12,9 +12,6 @@ public class EscalaRegrasService {
     public static final int MAX_DIAS_PARA_FOLGA = 7;
     public static final int DIAS_TRABALHO_ANTES_FOLGA = 0;
 
-    //TALVEZ NAO USE
-    public static final int DIAS_FOLGA_APOS_TRABALHO = 1;
-
     public static final int DOMINGO_FOLGA_OBRIGATORIA = 1;
     public static final int MIN_FOLGAS_POR_SEMANA = 1;
 
@@ -50,15 +47,6 @@ public class EscalaRegrasService {
         return count;
     }
 
-    // NAO SERA NECESSARIO
-
-    /**
-     * Calcula número de folgas baseado na quantidade de sábados no mês
-     */
-    public int calcularFolgasPorFuncionario(int numeroSabados) {
-        // Regra: 6 folgas para meses com 5 sábados, 5 folgas para meses com 4 sábados
-        return numeroSabados == 5 ? 6 : 5;
-    }
 
     /**
      * cria metodo que conta quantos colaboradores tem, verifica quantas folgas serao dadas por dia no mês

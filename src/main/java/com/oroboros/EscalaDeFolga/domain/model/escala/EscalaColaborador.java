@@ -24,7 +24,7 @@ public class EscalaColaborador {
     @ManyToOne
     private Colaborador colaborador;
 
-    private LocalDate data; // cada registro é um dia
+    private LocalDate data;
 
     @Enumerated(EnumType.STRING)
     private TurnoEnum turno;

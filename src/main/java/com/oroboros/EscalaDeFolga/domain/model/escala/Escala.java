@@ -18,6 +18,8 @@ public class Escala {
     private int mes;
     private int ano;
 
+    private int folgasPermitidas;
+
     @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL)
     private List<EscalaColaborador> registros;
 
