@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FolgaRepository extends JpaRepository<Folga, Long> {
@@ -26,7 +27,7 @@ public interface FolgaRepository extends JpaRepository<Folga, Long> {
         FROM Folga f
         WHERE f.colaborador = :colaborador
           AND f.status IN ('PENDENTE', 'APROVADA')
-          AND FUNCTION('EXTRACT', 'DOW', f.dataSolicitada) = 0
+          AND FUNCTION('DAYOFWEEK',  f.dataSolicitada) = 1
           AND FUNCTION('MONTH', f.dataSolicitada) = :mes
           AND FUNCTION('YEAR', f.dataSolicitada) = :ano
     """)
@@ -34,5 +35,17 @@ public interface FolgaRepository extends JpaRepository<Folga, Long> {
             @Param("colaborador") Colaborador colaborador,
             @Param("mes") int mes,
             @Param("ano") int ano
+    );
+
+    @Query("""
+    SELECT MAX(f.dataSolicitada)
+    FROM Folga f
+    WHERE f.colaborador = :colaborador
+      AND f.dataSolicitada < :data
+      AND f.status IN ('PENDENTE', 'APROVADA')
+""")
+    Optional<LocalDate> findUltimaFolgaAntesDe(
+            @Param("colaborador") Colaborador colaborador,
+            @Param("data") LocalDate data
     );
 }

@@ -1,5 +1,6 @@
 package com.oroboros.EscalaDeFolga.domain.service;
 
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -7,9 +8,10 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 
 @Service
+@Getter
 public class EscalaRegrasService {
 
-    public static final int MAX_DIAS_PARA_FOLGA = 7;
+    private static final int DIAS_TRABALHO_PERMITIDOS = 6;
     public static final int DIAS_TRABALHO_ANTES_FOLGA = 0;
 
     public static final int DOMINGO_FOLGA_OBRIGATORIA = 1;
@@ -87,6 +89,9 @@ public class EscalaRegrasService {
                 : 0;
 
         return dia == DayOfWeek.SUNDAY ? folgasPorDomingo : folgasPorDiaDaSemana;
+    }
+    public int getDiasTrabalhoPermitidos() {
+        return DIAS_TRABALHO_PERMITIDOS;
     }
 }
 
