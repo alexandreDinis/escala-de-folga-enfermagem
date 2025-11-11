@@ -48,4 +48,10 @@ public interface FolgaRepository extends JpaRepository<Folga, Long> {
             @Param("colaborador") Colaborador colaborador,
             @Param("data") LocalDate data
     );
+
+    List<Folga> findByColaboradorAndEscalaAndStatusIn(
+            Colaborador colaborador,
+            Escala escala,
+            List<StatusFolgaEnum> status
+    );
 }
