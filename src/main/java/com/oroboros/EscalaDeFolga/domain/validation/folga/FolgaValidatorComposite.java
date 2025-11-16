@@ -1,4 +1,4 @@
-package com.oroboros.EscalaDeFolga.domain.validation;
+package com.oroboros.EscalaDeFolga.domain.validation.folga;
 
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import lombok.RequiredArgsConstructor;

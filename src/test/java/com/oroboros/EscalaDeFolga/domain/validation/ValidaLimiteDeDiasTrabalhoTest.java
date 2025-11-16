@@ -4,6 +4,7 @@ import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
 import com.oroboros.EscalaDeFolga.domain.service.EscalaRegrasService;
+import com.oroboros.EscalaDeFolga.domain.validation.folga.ValidaLimiteDeDiasTrabalho;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.FolgaRepository;
 
 import org.junit.jupiter.api.BeforeEach;

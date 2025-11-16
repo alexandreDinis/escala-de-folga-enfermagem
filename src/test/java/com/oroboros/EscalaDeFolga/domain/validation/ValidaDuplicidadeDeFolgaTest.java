@@ -2,6 +2,8 @@ package com.oroboros.EscalaDeFolga.domain.validation;
 
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
+import com.oroboros.EscalaDeFolga.domain.validation.folga.ResultadoValidacao;
+import com.oroboros.EscalaDeFolga.domain.validation.folga.ValidaDuplicidadeDeFolga;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.FolgaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
