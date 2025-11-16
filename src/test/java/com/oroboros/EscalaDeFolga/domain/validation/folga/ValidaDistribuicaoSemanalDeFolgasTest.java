@@ -1,11 +1,10 @@
-package com.oroboros.EscalaDeFolga.domain.validation;
+package com.oroboros.EscalaDeFolga.domain.validation.folga;
 
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
 import com.oroboros.EscalaDeFolga.domain.service.EscalaRegrasService;
-import com.oroboros.EscalaDeFolga.domain.validation.folga.ValidaDistribuicaoSemanalDeFolgas;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.FolgaRepository;
 
 import org.junit.jupiter.api.BeforeEach;
