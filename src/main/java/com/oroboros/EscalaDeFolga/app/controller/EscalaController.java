@@ -3,6 +3,7 @@ package com.oroboros.EscalaDeFolga.app.controller;
 
 import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaResponseDTO;
+import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaUpdateDTO;
 import com.oroboros.EscalaDeFolga.app.mapper.EscalaMapper;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.service.EscalaService;
@@ -34,5 +35,19 @@ public class EscalaController {
         Escala escala = escalaService.buscarPorId(id);
 
         return ResponseEntity.ok(escalaMapper.toResponse(escala));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<EscalaResponseDTO> atualizarEscala(@PathVariable Long id,
+                                                             @RequestBody EscalaUpdateDTO dto){
+
+        return ResponseEntity.ok(escalaMapper.toResponse(escalaService.atualizarEscala(id, dto)));
+
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        escalaService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

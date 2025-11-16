@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("colaborador")
+@RequestMapping("api/colaborador")
 @SecurityRequirement(name = "bearer-key")
 public class ColaboradorController {
 
