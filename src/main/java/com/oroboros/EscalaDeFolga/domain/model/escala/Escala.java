@@ -20,6 +20,9 @@ public class Escala {
 
     private int folgasPermitidas;
 
+    @Enumerated(EnumType.STRING)
+    private StatusEscalaEnum status = StatusEscalaEnum.NOVA;
+
     @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL)
     private List<EscalaColaborador> registros;
 

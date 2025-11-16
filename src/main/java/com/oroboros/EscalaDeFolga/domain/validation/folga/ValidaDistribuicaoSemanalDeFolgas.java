@@ -4,6 +4,7 @@ import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
+import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.FolgaRepository;
 import com.oroboros.EscalaDeFolga.domain.service.EscalaRegrasService;
 import lombok.RequiredArgsConstructor;

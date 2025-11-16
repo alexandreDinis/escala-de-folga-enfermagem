@@ -1,6 +1,7 @@
 package com.oroboros.EscalaDeFolga.domain.validation.folga;
 
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
+import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

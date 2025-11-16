@@ -3,6 +3,7 @@ package com.oroboros.EscalaDeFolga.domain.validation.folga;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.service.EscalaRegrasService;
+import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.FolgaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
