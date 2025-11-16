@@ -28,8 +28,6 @@ public class Colaborador {
     private TurnoEnum turno;
 
     boolean ativo = true;
-    private int domingosFolgaNoMes;
-    private LocalDate dataUltimoTrabalho;
 
     @OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL)
     private List<Folga> folgas;

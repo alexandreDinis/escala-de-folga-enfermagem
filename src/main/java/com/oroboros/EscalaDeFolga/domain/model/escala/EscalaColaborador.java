@@ -4,6 +4,7 @@ import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 
@@ -24,7 +25,10 @@ public class EscalaColaborador {
     @ManyToOne
     private Colaborador colaborador;
 
-    private LocalDate data; // cada registro é um dia
+    private LocalDate diaDaEscala;
+
+    @CreatedDate
+    private LocalDate criadoEm;
 
     @Enumerated(EnumType.STRING)
     private TurnoEnum turno;
