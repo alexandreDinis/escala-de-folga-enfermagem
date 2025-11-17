@@ -1,182 +1,210 @@
-🏥 Escala de Folga – API de Gestão Inteligente para Enfermagem
-Mostrar Imagem
-Mostrar Imagem
-Mostrar Imagem
-Mostrar Imagem
-Mostrar Imagem
-
-🎯 Sistema inteligente para automatizar a geração de escalas de folgas de profissionais de enfermagem, garantindo cumprimento das regras trabalhistas e evitando erros humanos.
-
-
+# 🏥 Escala de Folga – API de Gestão Inteligente para Enfermagem
 📘 Sobre o Projeto
-Esta API foi criada para resolver um problema real do dia a dia de gestores de enfermagem: a criação manual de escalas de folgas.
-💡 A História por Trás
-Minha esposa é enfermeira, e eu via o tempo enorme que ela gastava elaborando escalas — conferindo datas, domingos, intervalos mínimos, distribuição por turnos e inúmeras regras específicas de cada hospital.
-O resultado? Horas perdidas, planilhas confusas e risco constante de erro humano.
-Para facilitar esse processo e devolver tempo de qualidade para os profissionais de saúde, desenvolvi esta API.
+
+API desenvolvida para automatizar a geração de escalas de folga para profissionais de enfermagem.
+Ela nasceu da observação da rotina da minha esposa, enfermeira, que gastava horas criando escalas manualmente — o que me motivou a criar uma solução prática, segura e automática do Projeto
+
+
+O resultado?
+⏳ Horas perdidas
+📄 Planilhas confusas
+⚠️ Alto risco de erro humano
+
+Para facilitar esse processo e devolver tempo de qualidade aos profissionais, desenvolvi esta API.
+
+
 
 🎯 Objetivos
-Garantir que o administrador da escala consiga, com poucos cliques:
+
+Com poucos cliques, o administrador consegue:
 
 ✅ Criar e gerenciar folgas com segurança
-✅ Respeitar todas as regras trabalhistas automaticamente
-✅ Evitar sobrecarga de profissionais
-✅ Distribuir colaboradores corretamente entre os turnos
-✅ Ser avisado automaticamente quando alguma regra for violada
-✅ Ter rastreabilidade completa de todas as mudanças
 
+✅ Validar automaticamente regras trabalhistas
+
+✅ Evitar sobrecarga de plantões
+
+✅ Distribuir turnos proporcionalmente
+
+✅ Receber alertas quando qualquer regra for violada
+
+✅ Rastrear todas as alterações com auditoria
 
 ⚙️ Principais Funcionalidades
-🗓️ 1. Controle Inteligente de Folgas
+🗓️ Controle Inteligente de Folgas
+
 A API identifica automaticamente:
 
-✅ Última folga registrada do colaborador
-✅ Intervalo mínimo até a próxima folga permitida
-✅ Se o colaborador já tem seu domingo de descanso no mês
-✅ Se a nova folga viola alguma regra trabalhista
+Última folga do colaborador
 
-🚨 2. Sistema de Alertas Preventivos
-Ao tentar registrar uma folga, a API valida e informa:
-ValidaçãoDescrição⚠️ Domingo obrigatórioColaborador ainda não tem folga em domingo no mês⚠️ Intervalo mínimoNão respeitou o período mínimo entre folgas⚠️ Limite mensalTentativa de ultrapassar o número máximo de folgas⚠️ Desequilíbrio de turnoEscala desproporcional em determinado dia⚠️ Risco de insuficiênciaColaborador pode não completar suas folgas no mês
-Esses alertas garantem segurança, justiça e precisão no planejamento!
-👥 3. Distribuição Proporcional por Turno
-A API calcula automaticamente:
+Intervalo mínimo para a próxima folga
 
-Quantos colaboradores existem por turno (Manhã, Tarde, Noite)
-Quantos podem folgar simultaneamente em cada dia
-Se o turno ficará desequilibrado ou descoberto
-Evita deixar plantões sem cobertura adequada
+Se o colaborador já folgou no domingo
 
-🧮 4. Regras Configuráveis por Instituição
-Cada hospital tem suas próprias diretrizes. A API permite definir:
-yaml✓ Número de folgas mensais (ex: 4 a 6 folgas)
-✓ Quantidade mínima por semana
-✓ Exigência de pelo menos 1 domingo
-✓ Intervalos obrigatórios entre folgas
-✓ Limite de folgas simultâneas por turno
-Tudo é validado automaticamente!
-📊 5. Auditoria Completa de Alterações
-Cada mudança gera um registro detalhado:
+Se uma nova folga viola regras trabalhistas
 
-📝 Criação de folga
-✏️ Atualização/reprogramação
-❌ Cancelamento/inativação
-✅ Reativação
+🚨 Sistema de Alertas Preventivos
+Validação	Descrição
+⚠️ Domingo obrigatório	Colaborador sem domingo no mês
+⚠️ Intervalo mínimo	Tenta folgar antes do permitido
+⚠️ Limite mensal	Ultrapassa quantidade de folgas mensais
+⚠️ Desequilíbrio	Turno ficaria desproporcional
+⚠️ risco de insuficiência	Pode não completar folgas no mês
+👥 Distribuição Proporcional por Turno
 
-O sistema mantém rastreabilidade total para fins de conformidade e auditorias.
+A API calcula:
 
-🧩 Tecnologias Utilizadas
-CategoriaTecnologiaLinguagemJava 17FrameworkSpring Boot 3Banco de DadosPostgreSQL 15ORMSpring Data JPA + HibernateValidaçãoBean Validation (JSR 380)DocumentaçãoSpringDoc OpenAPI 3 (Swagger)BuildMaven 3.9+ContainerizaçãoDocker + Docker ComposeUtilitáriosLombok
+Quantidade de colaboradores por turno
 
-🚀 Como Rodar o Projeto
-📦 Opção 1: Com Docker ✅ (Recomendado)
-1️⃣ Pré-requisitos
+Quantos podem folgar no mesmo dia
 
-Docker instalado
-Docker Compose instalado
+Previne plantões descobertos
 
-2️⃣ Clone o repositório
-bashgit clone https://github.com/seu-usuario/escala-folga.git
-cd escala-folga
-3️⃣ Configure as variáveis de ambiente
-bash# Copie o exemplo
-cp .env.example .env
+🧮 Regras Configuráveis por Hospital
 
-# Edite com suas senhas
-nano .env
-Conteúdo do .env:
-env# Banco de Dados
-POSTGRES_DB=escala_folga
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=sua_senha_forte_aqui  # ⚠️ MUDE!
-POSTGRES_PORT=5432
+Você pode configurar:
 
-# Backend
-BACKEND_PORT=8080
-SPRING_PROFILES_ACTIVE=docker
-SPRING_JPA_HIBERNATE_DDL_AUTO=update
-SPRING_JPA_SHOW_SQL=true
-4️⃣ Subir os containers
-bash# Primeira vez (com build)
-docker compose up --build -d
+Número de folgas mensais
 
-# Ver logs
-docker compose logs -f backend
+Intervalo mínimo entre folgas
 
-# Verificar status
-docker compose ps
-5️⃣ Acessar a aplicação
+Exigência de domingo
 
-🌐 API: http://localhost:8080
-📚 Swagger UI: http://localhost:8080/swagger-ui.html
-📖 API Docs: http://localhost:8080/api-docs
+Limites de folgas simultâneas por turno
 
-6️⃣ Comandos úteis
-bash# Parar containers (dados permanecem)
-docker compose down
+📊 Auditoria Completa
 
-# Rebuild após mudanças no código
-docker compose up --build -d
+Cada ação gera um registro:
 
-# Ver logs em tempo real
-docker compose logs -f backend
+📝 Criação
 
-# Reiniciar apenas o backend
-docker compose restart backend
+✏️ Atualização
 
-# Apagar tudo (⚠️ CUIDADO: remove dados!)
-docker compose down -v
+❌ Cancelamento
 
-💻 Opção 2: Rodar Localmente (sem Docker)
-1️⃣ Pré-requisitos
+🔁 Reativação
 
-☕ JDK 17+
-📦 Maven 3.9+
-🐘 PostgreSQL 15+ rodando localmente
 
-2️⃣ Configurar o banco de dados
-sql-- Criar banco
-CREATE DATABASE escala_folga;
+#
+#
+#
+# ⚠️ Status Atual do Projeto ⚠️
 
--- Criar usuário
-CREATE USER admin WITH PASSWORD 'admin123';
-GRANT ALL PRIVILEGES ON DATABASE escala_folga TO admin;
-3️⃣ Configurar application-dev.properties
-properties# src/main/resources/application-dev.properties
+Este é um projeto em **Desenvolvimento Ativo (Work In Progress)**. 
+Tanto o **backend (API)** quanto o **frontend (Dashboard)** estão sendo construídos. 
+A API já possui funcionalidades robustas, mas o sistema ainda não é recomendado para uso em produção. Por favor, confira o [Roadmap](#📝-roadmap) para detalhes sobre as funcionalidades em andamento.
+#
+#
+#
+## Stack utilizada
+
+
+**Back-end:** 
+
+Java 17
+
+Spring Boot 3
+
+Maven 3.9
+
+PostgreSQL 15
+
+Docker e Docker Compose
+
+## 🚀 Como Rodar o Projeto
+
+📦 Opção 1 — Rodando com Docker (Recomendado)
+
+1️⃣ Clonar o repositório
+
+```bash
+  git clone https://github.com/alexandreDinis/escala-de-folga-enfermagem
+
+  ```
+
+Entre no diretório do projeto
+
+```bash
+  cd EscalaDeFolga/backend
+```
+
+🐋 Subir com Docker
+
+```bash
+  cp .env.example .env
+  nano .env
+```
+
+Exemplo:
+
+Inicie o servidor
+
+```bash
+  POSTGRES_DB=escala_folga
+  POSTGRES_USER=admin
+  POSTGRES_PASSWORD=admin123
+  POSTGRES_PORT=5432
+
+  BACKEND_PORT=8080
+  SPRING_PROFILES_ACTIVE=docker
+```
+
+2️⃣ Subir tudo
+
+```bash
+  docker compose up --build -d
+```
+
+3️⃣ Ver logs
+
+```bash
+  docker compose logs -f backend
+```
+
+🗄️ Acessar Banco de Dados Via Docker
+
+```bash
+  docker exec -it escala-folga-db psql -U admin -d escala_folga
+```
+
+🗄️ Comandos úteis no psql:
+
+```bash
+  \dt
+  \d colaborador
+  \d+ folga
+  SELECT * FROM colaborador;
+  \q
+```
+
+💻 Rodar Localmente (sem Docker)
+
+1️⃣ Configurar application-dev.properties
+
+```bash
 spring.datasource.url=jdbc:postgresql://localhost:5432/escala_folga
 spring.datasource.username=admin
 spring.datasource.password=admin123
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-4️⃣ Rodar o projeto
-bashcd backend
+```
 
-# Limpar e compilar
+2️⃣ Rodar o backend
+
+
+```bash
+cd backend
 mvn clean install
-
-# Rodar com perfil dev
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
-
-🗄️ Acessar o Banco de Dados
-Via Docker:
-bash# Entrar no container PostgreSQL
-docker exec -it escala-folga-db psql -U admin -d escala_folga
-Via psql local:
-bashpsql -h localhost -p 5432 -U admin -d escala_folga
-Comandos úteis dentro do psql:
-sql\dt                           -- Listar todas as tabelas
-\d colaborador               -- Ver estrutura da tabela colaborador
-\d+ folga                    -- Ver estrutura detalhada da tabela folga
-SELECT * FROM colaborador;   -- Listar colaboradores
-SELECT * FROM folga WHERE status = 'APROVADA';
-\q                           -- Sair
+```
 
 📁 Estrutura do Projeto
+
+```bash
 escala-folga/
-├── .env                          # Variáveis de ambiente (não commitar!)
-├── .env.example                  # Template de variáveis
-├── docker-compose.yml            # Orquestração Docker
+├── docker-compose.yml
+├── .env
 ├── README.md
 │
 └── backend/
@@ -185,95 +213,59 @@ escala-folga/
     ├── pom.xml
     │
     └── src/
-        ├── main/
-        │   ├── java/com/oroboros/EscalaDeFolga/
-        │   │   ├── app/                    # Controllers, DTOs
-        │   │   ├── domain/                 # Entidades, Services, Validações
-        │   │   ├── infrastructure/         # Repositories, Configs
-        │   │   └── util/                   # Helpers, Utilities
-        │   │
-        │   └── resources/
-        │       ├── application.properties
-        │       ├── application-dev.properties
-        │       ├── application-docker.properties
-        │       └── application-prod.properties
+        ├── main/java/com/oroboros/EscalaDeFolga/
+        │   ├── app/
+        │   ├── domain/
+        │   ├── infrastructure/
+        │   └── util/
         │
-        └── test/
-            └── java/                       # Testes unitários e integração
+        └── resources/
+
+```
 
 🌐 Documentação da API
-📚 Swagger UI (Interativo)
-Acesse: http://localhost:8080/swagger-ui.html
-📖 OpenAPI JSON
-Acesse: http://localhost:8080/api-docs
+📚 Swagger
 
-🔹 Resumo dos Endpoints Principais
-👤 Colaboradores
-MétodoEndpointDescriçãoPOST/api/colaboradoresCriar novo colaboradorGET/api/colaboradoresListar todos os colaboradoresGET/api/colaboradores/{id}Buscar colaborador por IDPUT/api/colaboradores/{id}Atualizar dados do colaboradorDELETE/api/colaboradores/{id}Inativar colaborador
-🗓️ Folgas
-MétodoEndpointDescriçãoPOST/api/folgasSolicitar nova folgaGET/api/folgasListar folgas (com filtros)GET/api/folgas/{id}Ver detalhes de uma folgaPUT/api/folgas/{id}/aprovarAprovar folga pendentePUT/api/folgas/{id}/rejeitarRejeitar folgaDELETE/api/folgas/{id}Cancelar folga
-📊 Escalas
-MétodoEndpointDescriçãoPOST/api/escalas/gerarGerar escala automáticaGET/api/escalas/{mes}/{ano}Buscar escala por períodoGET/api/escalas/{id}Ver detalhes da escalaPUT/api/escalas/{id}/publicarPublicar escala
+👉 http://localhost:8080/swagger-ui.html
 
-🧪 Testes
-bash# Rodar todos os testes
-mvn test
+📘 OpenAPI JSON
 
-# Rodar com coverage
-mvn test jacoco:report
+👉 http://localhost:8080/api-docs
 
-# Ver relatório de cobertura
-open target/site/jacoco/index.html
+
 
 🤝 Como Contribuir
 
-Fork o projeto
-Crie uma branch para sua feature (git checkout -b feature/nova-funcionalidade)
-Commit suas mudanças (git commit -m 'Add: nova funcionalidade')
-Push para a branch (git push origin feature/nova-funcionalidade)
-Abra um Pull Request
+```bash
+# Criar branch
+git checkout -b feature/minha-feature
 
+# Commitar mudanças
+git commit -m "feat: minha nova funcionalidade"
 
-📝 Roadmap
-✅ Implementado
+# Enviar ao GitHub
+git push origin feature/minha-feature
+```
 
- CRUD completo de colaboradores
- Sistema de validações de folgas
- Distribuição por turnos
- Alertas inteligentes
- Auditoria de mudanças
- Dockerização completa
+## Autores
 
-🚧 Em Desenvolvimento
-
- Dashboard administrativo (frontend)
- Notificações via email
- Exportação para PDF/Excel
- Integração com sistemas de RH
- App mobile
-
-💡 Planejado
-
- IA para sugestão automática de escalas
- Multi-tenancy (suporte a múltiplos hospitais)
- Relatórios analíticos avançados
-
-
-📄 Licença
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+- [@AlexandreDinis](https://www.github.com/AlexandreDinis)
 
 👨‍💻 Autor
+
 Alexandre Dinis
 
-💼 LinkedIn: seu-linkedin
-🐙 GitHub: @seu-usuario
-📧 Email: seu-email@exemplo.com
+💼 LinkedIn: https://www.linkedin.com/in/alexandredinis/
 
 
-❤️Agradecimentos
+Agradecimentos
 Este projeto foi inspirado pela rotina desafiadora da minha esposa, enfermeira dedicada, e pela necessidade de tornar a gestão de escalas mais justa, segura e prática para todos os profissionais de saúde.
 Dedicado a todos os profissionais de enfermagem que trabalham incansavelmente para cuidar de nós. 🏥💙
 
-<div align="center">
-⭐ Se este projeto te ajudou, deixe uma estrela! ⭐
-</div>
+
+
+
+              ⭐ Se este projeto te ajudou, deixe uma estrela! ⭐
+
+
+
