@@ -1,10 +1,11 @@
-HELP.md
+backend/HELP.md
 .env
-/src/main/java/com/oroboros/EscalaDeFolga/config/DataLoader.java
+/backend/src/main/java/com/oroboros/EscalaDeFolga/config/DataLoader.java
 target/
-.mvn/wrapper/maven-wrapper.jar
+backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+backend/target/
 
 ### STS ###
 .apt_generated
