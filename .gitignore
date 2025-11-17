@@ -1,5 +1,48 @@
-backend/HELP.md
+# ========================================
+# Variáveis de Ambiente - NUNCA commitar!
+# ========================================
 .env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# ========================================
+# Backend (Spring Boot / Maven)
+# ========================================
+backend/target/
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/*.class
+backend/.mvn/
+!backend/.mvn/wrapper/maven-wrapper.jar
+backend/!**/src/main/**/target/
+backend/!**/src/test/**/target/
+
+# Logs do backend
+backend/*.log
+backend/*.log.*
+
+# ========================================
+# Frontend (Node.js / React/Vue/Angular)
+# ========================================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.nuxt/
+frontend/.cache/
+frontend/*.log
+
+# ========================================
+# Docker
+# ========================================
+docker-volumes/
+postgres-data/
+*.log
+
+
 /backend/src/main/java/com/oroboros/EscalaDeFolga/config/DataLoader.java
 target/
 backend/.mvn/wrapper/maven-wrapper.jar
@@ -36,3 +79,18 @@ build/
 ### VS Code ###
 .vscode/
 Invalidate
+
+# ========================================
+# Sistema Operacional
+# ========================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ========================================
+# Outros
+# ========================================
+*.bak
+*.tmp
+*.temp
+.cache/
