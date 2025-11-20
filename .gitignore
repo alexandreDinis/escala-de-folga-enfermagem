@@ -4,6 +4,9 @@
 .env
 .env.local
 .env.*.local
+.env.dev
+.env.prod
+!.env.example
 backend/.env
 frontend/.env
 
@@ -41,6 +44,7 @@ frontend/*.log
 docker-volumes/
 postgres-data/
 *.log
+.mvn/
 
 
 /backend/src/main/java/com/oroboros/EscalaDeFolga/config/DataLoader.java

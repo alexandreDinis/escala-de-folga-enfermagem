@@ -1,6 +1,7 @@
 package com.oroboros.EscalaDeFolga.domain.service;
 
 import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaUpdateDTO;
+import com.oroboros.EscalaDeFolga.domain.exception.EscalaNotFoundException;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.validation.escala.ValidaEscalaEditavel;
 import com.oroboros.EscalaDeFolga.domain.validation.escala.ValidaExclusaoPossivel;
@@ -27,13 +28,13 @@ public class EscalaService {
 
     public Escala buscarPorId(Long id) {
         return escalaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Escala não encontrada."));
+                .orElseThrow(() -> new EscalaNotFoundException(id));
     }
 
     public Escala atualizarEscala(Long id, EscalaUpdateDTO dto) {
 
         Escala escala = escalaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Escala não encontrada."));
+                .orElseThrow(() -> new EscalaNotFoundException(id));
 
         var validacao = validaEscalaEditavel.validar(escala);
 
@@ -55,7 +56,7 @@ public class EscalaService {
     public void deletar(Long id) {
 
         Escala escala = escalaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Escala não encontrada."));
+                .orElseThrow(() -> new EscalaNotFoundException(id));
 
         var validacao = validaExclusaoPossivel.validar(escala);
 
