@@ -1,5 +1,6 @@
 package com.oroboros.EscalaDeFolga.domain.model.escala;
 
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,5 +29,11 @@ public class Escala {
 
     @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL)
     private List<Folga> folgas;
+
+    private TurnoEnum turno;
+
+    @ManyToOne
+    @JoinColumn(name = "setor_id", nullable = false)
+    private Setor setor;
 
 }
