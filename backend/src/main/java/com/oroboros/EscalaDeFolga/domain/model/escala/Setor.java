@@ -23,4 +23,8 @@ public class Setor {
     private String nome;
 
     private boolean ativo = true;
+
+    public void deletar(){
+        this.ativo = false;
+    }
 }
