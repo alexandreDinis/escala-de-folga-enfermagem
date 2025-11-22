@@ -3,26 +3,38 @@ package com.oroboros.EscalaDeFolga.domain.service;
 import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaUpdateDTO;
 import com.oroboros.EscalaDeFolga.domain.exception.EscalaNotFoundException;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
+import com.oroboros.EscalaDeFolga.domain.validation.escala.EscalaValidatorComposite;
 import com.oroboros.EscalaDeFolga.domain.validation.escala.ValidaEscalaEditavel;
 import com.oroboros.EscalaDeFolga.domain.validation.escala.ValidaExclusaoPossivel;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.EscalaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class EscalaService {
 
-    @Autowired
-    private EscalaRepository escalaRepository;
 
-    @Autowired
-    private ValidaEscalaEditavel validaEscalaEditavel;
+    private final EscalaRepository escalaRepository;
 
-    @Autowired
-    private ValidaExclusaoPossivel validaExclusaoPossivel;
+
+    private final  ValidaEscalaEditavel validaEscalaEditavel;
+
+
+    private final ValidaExclusaoPossivel validaExclusaoPossivel;
+
+    private final EscalaValidatorComposite escalaValidatorComposite;
 
 
     public Escala criarEscala(Escala escala) {
+
+        var validacao = escalaValidatorComposite.validar(escala);
+
+        if (!validacao.isValido()) {
+            throw new IllegalStateException(validacao.getMensagem());
+        }
+
         return escalaRepository.save(escala);
     }
 

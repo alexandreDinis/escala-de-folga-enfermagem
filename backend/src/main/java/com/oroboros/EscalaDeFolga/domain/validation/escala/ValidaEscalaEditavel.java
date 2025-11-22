@@ -4,6 +4,7 @@ import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusEscalaEnum;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
 import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Component;
  * </pre>
  */
 @Component
+@Order(3)
 public class ValidaEscalaEditavel implements IEscalaValidator {
 
     @Override

@@ -4,6 +4,7 @@ import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusEscalaEnum;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
 import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,7 +29,9 @@ import org.springframework.stereotype.Component;
  * - Possui EscalaColaborador → não pode excluir
  * </pre>
  */
+
 @Component
+@Order(4)
 public class ValidaExclusaoPossivel implements IEscalaValidator {
 
     @Override
