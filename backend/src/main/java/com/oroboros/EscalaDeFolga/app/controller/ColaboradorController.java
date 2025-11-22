@@ -2,7 +2,7 @@ package com.oroboros.EscalaDeFolga.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.AuditoriaInfoDTO;
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorInputDTO;
+import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorResponseDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorUpdateDTO;
 import com.oroboros.EscalaDeFolga.domain.service.ColaboradorService;
@@ -26,7 +26,7 @@ public class ColaboradorController {
     private ColaboradorService colaboradorService;
 
     @PostMapping
-    public ResponseEntity<ColaboradorResponseDTO> cadastrar (@RequestBody @Valid ColaboradorInputDTO colaborador) throws JsonProcessingException {
+    public ResponseEntity<ColaboradorResponseDTO> cadastrar (@RequestBody @Valid ColaboradorRequestDTO colaborador) throws JsonProcessingException {
 
         // 🔹 Para testes, dados fictícios
         //todo Mudar após a implementação de segurança

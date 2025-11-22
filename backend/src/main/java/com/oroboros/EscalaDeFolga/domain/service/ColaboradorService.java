@@ -2,9 +2,10 @@ package com.oroboros.EscalaDeFolga.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.AuditoriaInfoDTO;
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorInputDTO;
+import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorResponseDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorUpdateDTO;
+import com.oroboros.EscalaDeFolga.app.mapper.ColaboradorMapper;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.AcaoAuditoriaEnum;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.AuditoriaColaboradorRepository;
@@ -28,10 +29,12 @@ public class ColaboradorService {
     @Autowired
     private AuditoriaColaboradorService auditoriaService;
 
+    private ColaboradorMapper colaboradorMapper;
 
-    public ColaboradorResponseDTO cadastrar(ColaboradorInputDTO colaboradorDTO, AuditoriaInfoDTO auditor) throws JsonProcessingException {
 
-        Colaborador colaborador = new Colaborador(colaboradorDTO);
+    public ColaboradorResponseDTO cadastrar(ColaboradorRequestDTO colaboradorDTO, AuditoriaInfoDTO auditor) throws JsonProcessingException {
+
+        Colaborador colaborador = colaboradorMapper.toEntity(colaboradorDTO);
         colaboradorRepository.save(colaborador);
 
         //todo:dados ficticios aguardando a implementação da segurança e usuarios.
@@ -43,19 +46,19 @@ public class ColaboradorService {
                 null,
                 JsonUtil.toJson(colaborador)
         );
-        return new ColaboradorResponseDTO(colaborador);
+        return colaboradorMapper.toResponse(colaborador);
     }
 
 
     public Page<ColaboradorResponseDTO> listar(Pageable pageable) {
-        return colaboradorRepository.findByAtivoTrue(pageable).map(ColaboradorResponseDTO::new);
+        return colaboradorRepository.findByAtivoTrue(pageable).map(colaboradorMapper::toResponse);
     }
 
 
     public ColaboradorResponseDTO buscarPorId(Long id) {
         Colaborador colaborador = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Não há colaborador com esse id " + id + " em nosso banco de dados."));
-        return new ColaboradorResponseDTO(colaborador);
+        return colaboradorMapper.toResponse(colaborador);
     }
 
 
@@ -108,6 +111,6 @@ public class ColaboradorService {
                 JsonUtil.toJson(colaborador)
         );
 
-        return new ColaboradorResponseDTO(colaborador);
+        return colaboradorMapper.toResponse(colaborador);
     }
 }

@@ -1,8 +1,7 @@
 package com.oroboros.EscalaDeFolga.domain.model.colaborador;
 
-
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorInputDTO;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
+import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,19 +31,13 @@ public class Colaborador {
     @OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL)
     private List<Folga> folgas;
 
+    @Column(name = "ultima_folga")
+    private LocalDate ultimaFolga;
 
-    // ✅ NOVO: Histórico para regra dos 6 dias
-    @Transient // Não persiste, calcula na hora
-    public LocalDate getUltimaFolga() {
-        // Será calculado via service
-        return null;
-    }
+    @ManyToOne
+    @JoinColumn(name = "setor_id")
+    private Setor setor;
 
-    public Colaborador(ColaboradorInputDTO colaborador) {
-        this.nome = colaborador.nome();
-        this.cargo = colaborador.cargo();
-        this.turno = colaborador.turno();
-    }
 
     public void delete(){
         this.ativo = false;

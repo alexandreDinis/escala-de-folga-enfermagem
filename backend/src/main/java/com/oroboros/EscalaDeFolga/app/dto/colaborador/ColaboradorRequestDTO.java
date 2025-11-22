@@ -5,13 +5,18 @@ import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record ColaboradorInputDTO(
+public record ColaboradorRequestDTO(
 
-        @NotBlank(message = "Nome é obrigatório")
+        @NotBlank(message = "Nome é obrigatório.")
         String nome,
 
-        @NotNull(message = "Cargo é obrigatório")
+        @NotNull(message = "Cargo é obrigatório.")
         CargoEnum cargo,
 
-        TurnoEnum turno) {
+        @NotNull(message = "Turno é obrigatório.")
+        TurnoEnum turno,
+
+        @NotNull(message = "Setor é obrigatório.")
+        Long setorId)
+{
 }
