@@ -27,6 +27,13 @@ public class SetorService {
 
     public SetorResposnseDTO cadastrar(@Valid SetorRequestDTO dto) {
         Setor newSetor = setorMapper.toEntity(dto);
+
+        newSetor.setNome(newSetor.getNome()
+                .trim()
+                .replaceAll("\\s+", " ")
+                .toUpperCase());
+
+
         return setorMapper.toResponse(setorRepository.save(newSetor));
     }
 

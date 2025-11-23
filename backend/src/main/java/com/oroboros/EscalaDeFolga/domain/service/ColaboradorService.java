@@ -35,6 +35,12 @@ public class ColaboradorService {
     public ColaboradorResponseDTO cadastrar(ColaboradorRequestDTO colaboradorDTO, AuditoriaInfoDTO auditor) throws JsonProcessingException {
 
         Colaborador colaborador = colaboradorMapper.toEntity(colaboradorDTO);
+
+        colaborador.setNome(colaborador.getNome()
+                .trim()
+                .replaceAll("\\s+", " ")
+                .toUpperCase());
+
         colaboradorRepository.save(colaborador);
 
         //todo:dados ficticios aguardando a implementação da segurança e usuarios.
