@@ -35,19 +35,17 @@ public class EscalaService {
     @Transactional
     public Escala criarEscala(Escala escala) {
 
-        // Executa TODAS as validações de negócio (incluindo existência do setor)
+
         ResultadoValidacao validacao = escalaValidatorComposite.validar(escala);
 
         if (!validacao.isValido()) {
             throw new ValidacaoException(validacao.getMensagem());
         }
 
-        // Se chegou aqui, passou em todas as validações
-        // Busca o setor completo para associar à escala
-        Setor setorCompleto = setorService.buscarPorId(escala.getSetor().getId());
+        Long setorId = escala.getSetor().getId();
+        Setor setorGerenciado = setorService.buscarPorId(setorId);
 
-
-        escala.setSetor(null);
+        escala.setSetor(setorGerenciado);
 
         return escalaRepository.save(escala);
     }

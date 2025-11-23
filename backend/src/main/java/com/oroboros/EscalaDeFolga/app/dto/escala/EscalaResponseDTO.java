@@ -8,5 +8,6 @@ public record EscalaResponseDTO(
         Integer ano,
         Integer folgasPermitidas,
         TurnoEnum turno,
-        Long setorId
+        Long setorId,
+        String setorNome
 ) {}

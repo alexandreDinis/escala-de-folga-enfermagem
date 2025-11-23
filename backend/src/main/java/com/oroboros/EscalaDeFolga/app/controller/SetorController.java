@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/setor")
+@RequestMapping("api/setor")
 @RequiredArgsConstructor
 public class SetorController {
 
