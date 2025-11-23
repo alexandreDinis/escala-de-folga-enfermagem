@@ -3,6 +3,7 @@ package com.oroboros.EscalaDeFolga.app.controller;
 import com.oroboros.EscalaDeFolga.app.dto.escala.SetorRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.escala.SetorResposnseDTO;
 import com.oroboros.EscalaDeFolga.app.dto.escala.SetorUpdateDTO;
+import com.oroboros.EscalaDeFolga.app.mapper.SetorMapper;
 import com.oroboros.EscalaDeFolga.domain.service.SetorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class SetorController {
 
     private final SetorService setorService;
+    private final SetorMapper setorMapper;
 
     @PostMapping
     public ResponseEntity<SetorResposnseDTO>cadastrar(@Valid @RequestBody SetorRequestDTO dto){
@@ -26,7 +28,7 @@ public class SetorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SetorResposnseDTO>buscarPorId(@PathVariable Long id){
-        return  ResponseEntity.ok(setorService.buscarPorId(id));
+        return  ResponseEntity.ok(setorMapper.toResponse(setorService.buscarPorId(id)));
     }
 
     @GetMapping
