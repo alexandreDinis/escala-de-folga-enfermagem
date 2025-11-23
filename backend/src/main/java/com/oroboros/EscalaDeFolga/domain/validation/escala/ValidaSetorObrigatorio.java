@@ -2,6 +2,8 @@ package com.oroboros.EscalaDeFolga.domain.validation.escala;
 
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
+import com.oroboros.EscalaDeFolga.infrastructure.repository.SetorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -31,16 +33,39 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@RequiredArgsConstructor
 @Order(1)
 public class ValidaSetorObrigatorio implements IEscalaValidator {
 
+    private final SetorRepository setorRepository;
+
     @Override
     public ResultadoValidacao validar(Escala escala) {
-        if (escala.getSetor() == null) {
+
+        // Valida se o setor foi informado
+        if (escala.getSetor() == null || escala.getSetor().getId() == null) {
             return ResultadoValidacao.erro(
-                    "A escala deve estar vinculada a um setor. Cadastre um setor antes de criar."
+                    "A escala deve estar vinculada a um setor válido. Informe o ID do setor."
             );
         }
+
+        // Valida se o ID é válido
+        if (escala.getSetor().getId() <= 0) {
+            return ResultadoValidacao.erro(
+                    "O ID do setor deve ser um número positivo maior que zero."
+            );
+        }
+
+        // ⚠️ IMPORTANTE: Verifica se o setor realmente existe no banco
+        boolean setorExiste = setorRepository.existsById(escala.getSetor().getId());
+
+        if (!setorExiste) {
+            return ResultadoValidacao.erro(
+                    String.format("Setor não encontrado com ID: %d. Cadastre o setor antes de criar a escala.",
+                            escala.getSetor().getId())
+            );
+        }
+
         return ResultadoValidacao.ok();
     }
 }

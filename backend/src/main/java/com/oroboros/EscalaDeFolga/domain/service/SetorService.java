@@ -30,9 +30,9 @@ public class SetorService {
         return setorMapper.toResponse(setorRepository.save(newSetor));
     }
 
-    public SetorResposnseDTO buscarPorId(Long id) {
-        return setorMapper.toResponse(setorRepository.findById(id)
-                .orElseThrow(SetorNotFoundExeption::new));
+    public Setor buscarPorId(Long id) {
+        return setorRepository.findById(id)
+                .orElseThrow(SetorNotFoundExeption::new);
     }
 
     public Page<SetorResposnseDTO> listar(Pageable pageable) {

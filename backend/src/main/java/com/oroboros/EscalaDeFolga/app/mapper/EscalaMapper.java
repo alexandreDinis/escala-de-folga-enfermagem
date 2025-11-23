@@ -12,9 +12,9 @@ import org.mapstruct.Named;
 public interface EscalaMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", ignore = true)
     @Mapping(target = "registros", ignore = true)
     @Mapping(target = "folgas", ignore = true)
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "setor", source = "setorId", qualifiedByName = "mapSetorFromId")
     Escala toEntity(EscalaRequestDTO dto);
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -60,6 +61,39 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Handler para exceções de validação de negócio (ValidacaoException).
+     * Retorna status 400 com a mensagem de erro das validações customizadas.
+     */
+    @ExceptionHandler(ValidacaoException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Erro de Validação", ex.getMessage()));
+    }
+
+    /**
+     * Handler para exceções de recurso não encontrado (RecursoNaoEncontradoException).
+     * Retorna status 404 com mensagem descritiva.
+     */
+    @ExceptionHandler(RecursoNaoEncontradoException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleRecursoNaoEncontradoException(RecursoNaoEncontradoException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse("Recurso Não Encontrado", ex.getMessage()));
+    }
+
+    /**
+     * Handler mantido para compatibilidade com código existente.
+     * RECOMENDAÇÃO: Migrar gradualmente para ValidacaoException.
+     */
+    @ExceptionHandler(BusinessException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Regra de Negócio Violada", ex.getMessage()));
     }
 
     // Classes auxiliares internas
