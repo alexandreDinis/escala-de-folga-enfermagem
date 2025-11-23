@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
+@Order(3)
 public class ValidaEscalaDuplicada implements IEscalaValidator {
 
     private final EscalaRepository escalaRepository;

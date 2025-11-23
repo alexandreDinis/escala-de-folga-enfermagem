@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * </pre>
  */
 @Component
-@Order(3)
+@Order(4)
 public class ValidaEscalaEditavel implements IEscalaValidator {
 
     @Override

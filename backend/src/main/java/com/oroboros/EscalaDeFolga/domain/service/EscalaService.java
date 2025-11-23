@@ -18,9 +18,7 @@ public class EscalaService {
 
     private final EscalaRepository escalaRepository;
 
-
     private final  ValidaEscalaEditavel validaEscalaEditavel;
-
 
     private final ValidaExclusaoPossivel validaExclusaoPossivel;
 
