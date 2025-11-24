@@ -1,8 +1,8 @@
 package com.oroboros.EscalaDeFolga.app.controller;
 
-import com.oroboros.EscalaDeFolga.app.dto.escala.SetorRequestDTO;
-import com.oroboros.EscalaDeFolga.app.dto.escala.SetorResposnseDTO;
-import com.oroboros.EscalaDeFolga.app.dto.escala.SetorUpdateDTO;
+import com.oroboros.EscalaDeFolga.app.dto.setor.SetorRequestDTO;
+import com.oroboros.EscalaDeFolga.app.dto.setor.SetorResponseDTO;
+import com.oroboros.EscalaDeFolga.app.dto.setor.SetorUpdateDTO;
 import com.oroboros.EscalaDeFolga.app.mapper.SetorMapper;
 import com.oroboros.EscalaDeFolga.domain.service.SetorService;
 import jakarta.validation.Valid;
@@ -21,23 +21,24 @@ public class SetorController {
     private final SetorService setorService;
     private final SetorMapper setorMapper;
 
+
     @PostMapping
-    public ResponseEntity<SetorResposnseDTO>cadastrar(@Valid @RequestBody SetorRequestDTO dto){
+    public ResponseEntity<SetorResponseDTO>cadastrar(@Valid @RequestBody SetorRequestDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(setorService.cadastrar(dto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SetorResposnseDTO>buscarPorId(@PathVariable Long id){
+    public ResponseEntity<SetorResponseDTO>buscarPorId(@PathVariable Long id){
         return  ResponseEntity.ok(setorMapper.toResponse(setorService.buscarPorId(id)));
     }
 
     @GetMapping
-    public ResponseEntity<Page<SetorResposnseDTO>>listar(Pageable pageable){
+    public ResponseEntity<Page<SetorResponseDTO>>listar(Pageable pageable){
         return ResponseEntity.ok(setorService.listar(pageable));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SetorResposnseDTO>autalizar(@PathVariable Long id, @RequestBody SetorUpdateDTO dto) {
+    public ResponseEntity<SetorResponseDTO>autalizar(@PathVariable Long id, @RequestBody SetorUpdateDTO dto) {
         return ResponseEntity.ok(setorService.autalizar(id, dto));
     }
 

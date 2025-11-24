@@ -1,11 +1,14 @@
 package com.oroboros.EscalaDeFolga.domain.service;
 
-import com.oroboros.EscalaDeFolga.app.dto.escala.SetorRequestDTO;
-import com.oroboros.EscalaDeFolga.app.dto.escala.SetorResposnseDTO;
-import com.oroboros.EscalaDeFolga.app.dto.escala.SetorUpdateDTO;
+import com.oroboros.EscalaDeFolga.app.dto.setor.SetorRequestDTO;
+import com.oroboros.EscalaDeFolga.app.dto.setor.SetorResponseDTO;
+import com.oroboros.EscalaDeFolga.app.dto.setor.SetorUpdateDTO;
 import com.oroboros.EscalaDeFolga.app.mapper.SetorMapper;
 import com.oroboros.EscalaDeFolga.domain.exception.SetorNotFoundExeption;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
+import com.oroboros.EscalaDeFolga.domain.util.TextoNormalizerUtil;
+import com.oroboros.EscalaDeFolga.domain.validation.setor.SetorValidadorComposite;
+import com.oroboros.EscalaDeFolga.infrastructure.exeption.BusinessException;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.SetorRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +27,24 @@ public class SetorService {
 
     private final SetorRepository setorRepository;
 
+    private final SetorValidadorComposite setorValidadorComposite;
 
-    public SetorResposnseDTO cadastrar(@Valid SetorRequestDTO dto) {
+
+    public SetorResponseDTO cadastrar(@Valid SetorRequestDTO dto) {
         Setor newSetor = setorMapper.toEntity(dto);
 
-        newSetor.setNome(newSetor.getNome()
-                .trim()
-                .replaceAll("\\s+", " ")
-                .toUpperCase());
+        var validacao = setorValidadorComposite.validar(newSetor);
+        if (!validacao.isValido()){
+            throw new BusinessException(validacao.getMensagem());
+        }
 
+        String nomeNormalizado = TextoNormalizerUtil.normalizar(dto.nome());
+
+        boolean exite = setorRepository.existsByNomeNormalizado(nomeNormalizado);
+
+        if (exite){
+            throw new BusinessException("Já existe um setor semelhante: " + dto.nome());
+        }
 
         return setorMapper.toResponse(setorRepository.save(newSetor));
     }
@@ -42,11 +54,11 @@ public class SetorService {
                 .orElseThrow(SetorNotFoundExeption::new);
     }
 
-    public Page<SetorResposnseDTO> listar(Pageable pageable) {
+    public Page<SetorResponseDTO> listar(Pageable pageable) {
         return setorRepository.findByAtivoTrue(pageable).map(setorMapper::toResponse);
     }
 
-    public SetorResposnseDTO autalizar(Long id, SetorUpdateDTO dto) {
+    public SetorResponseDTO autalizar(Long id, SetorUpdateDTO dto) {
         Setor setor = setorRepository.findById(id)
                 .orElseThrow(SetorNotFoundExeption::new);
 
@@ -61,5 +73,6 @@ public class SetorService {
         Setor setor = setorRepository.findById(id)
                 .orElseThrow(SetorNotFoundExeption::new);
         setor.deletar();
+        setorRepository.save(setor);
     }
 }

@@ -2,6 +2,7 @@ package com.oroboros.EscalaDeFolga.domain.model.colaborador;
 
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
+import com.oroboros.EscalaDeFolga.domain.util.TextoNormalizerUtil;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -54,27 +55,7 @@ public class Colaborador {
     @PreUpdate
     private void normalizarNome() {
         if (this.nome != null) {
-            this.nomeNormalizado = normalizarTexto(this.nome);
+            this.nomeNormalizado = TextoNormalizerUtil.normalizar(this.nome);
         }
-    }
-
-    /**
-     * Normaliza texto removendo acentos, convertendo para lowercase e removendo espaços extras.
-     *
-     * @param texto texto original
-     * @return texto normalizado
-     */
-    public static String normalizarTexto(String texto) {
-        if (texto == null || texto.isBlank()) {
-            return "";
-        }
-        // Remove acentos (NFD = Decomposição canônica)
-        String semAcentos = Normalizer.normalize(texto, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "");
-
-        // Lowercase e remove espaços extras
-        return semAcentos.toLowerCase()
-                .trim()
-                .replaceAll("\\s+", " ");
     }
 }

@@ -1,6 +1,7 @@
-package com.oroboros.EscalaDeFolga.domain.validation.normalizacao;
+package com.oroboros.EscalaDeFolga.domain.validation.setor;
 
 import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
+import com.oroboros.EscalaDeFolga.domain.util.TextoNormalizerUtil;
 import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.SetorRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,18 +29,17 @@ public class ValidaSetorDuplicado implements ISetorValidator {
     @Override
     public ResultadoValidacao validar(Setor setor) {
 
-        String nomeNormalizado = Setor.normalizarTexto(setor.getNome());
+        String nomeNormalizado = TextoNormalizerUtil.normalizar(setor.getNome());
 
         // Busca setor com mesmo nome normalizado
-        boolean existe = setorRepository.existsByNomeNormalizadoAndIdNot(
+        var existe = setorRepository.findByNomeNormalizadoAndIdNot(
                 nomeNormalizado,
                 setor.getId() != null ? setor.getId() : -1L
         );
 
-        if (existe) {
+        if (existe.isPresent() && existe.get().isAtivo()) {
             return ResultadoValidacao.erro(
-                    String.format("Já existe um setor cadastrado com nome similar a '%s'. " +
-                                    "Verifique se não é uma duplicata.",
+                    String.format("Já existe um setor cadastrado com nome similar a '%s'. ",
                             setor.getNome())
             );
         }

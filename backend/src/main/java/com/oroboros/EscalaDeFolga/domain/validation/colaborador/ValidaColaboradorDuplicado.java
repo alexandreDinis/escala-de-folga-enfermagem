@@ -1,6 +1,7 @@
 package com.oroboros.EscalaDeFolga.domain.validation.colaborador;
 
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
+import com.oroboros.EscalaDeFolga.domain.util.TextoNormalizerUtil;
 import com.oroboros.EscalaDeFolga.domain.validation.ResultadoValidacao;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.ColaboradorRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class ValidaColaboradorDuplicado implements IColaboradorValidator {
             return ResultadoValidacao.erro("Turno é obrigatório.");
         }
 
-        String nomeNormalizado = Colaborador.normalizarTexto(colaborador.getNome());
+        String nomeNormalizado = TextoNormalizerUtil.normalizar(colaborador.getNome());
 
         // Busca colaborador com mesmo nome normalizado, setor e turno
         boolean existe = colaboradorRepository.existsByNomeNormalizadoAndSetorAndTurnoAndIdNot(
