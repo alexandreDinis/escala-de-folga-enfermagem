@@ -8,5 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SetorRepository extends JpaRepository<Setor, Long> {
+
     Page<Setor> findByAtivoTrue(Pageable pageable);
+
+    boolean existsByNomeNormalizadoAndIdNot(String nomeNormalizado, Long id);
 }
