@@ -44,8 +44,8 @@ public class Setor {
     @PreUpdate
     private void normalizarNome() {
         if (this.nome != null) {
+            this.nome = this.nome.trim().toUpperCase().replaceAll("\\s+", " ");
             this.nomeNormalizado = TextoNormalizerUtil.normalizar(this.nome);
         }
     }
-
 }

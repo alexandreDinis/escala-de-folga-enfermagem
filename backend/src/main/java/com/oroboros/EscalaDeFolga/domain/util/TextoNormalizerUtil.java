@@ -9,6 +9,7 @@ import java.text.Normalizer;
  */
 
 public class TextoNormalizerUtil {
+
     public static String normalizar(String texto) {
         if (texto == null || texto.isBlank()) {
             return "";

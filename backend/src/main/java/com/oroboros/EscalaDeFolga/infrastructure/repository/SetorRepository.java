@@ -19,4 +19,6 @@ public interface SetorRepository extends JpaRepository<Setor, Long> {
     boolean existsByNomeNormalizado(String nomeNormalizado);
 
     List<Setor> findByNomeNormalizadoContaining(String nomeNormalizado);
+
+    Optional<Setor> findByNomeNormalizado(String nomeNormalizado);
 }

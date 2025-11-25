@@ -27,20 +27,24 @@ public class SetorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(setorService.cadastrar(dto));
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<SetorResponseDTO>buscarPorId(@PathVariable Long id){
         return  ResponseEntity.ok(setorMapper.toResponse(setorService.buscarPorId(id)));
     }
+
 
     @GetMapping
     public ResponseEntity<Page<SetorResponseDTO>>listar(Pageable pageable){
         return ResponseEntity.ok(setorService.listar(pageable));
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<SetorResponseDTO>autalizar(@PathVariable Long id, @RequestBody SetorUpdateDTO dto) {
         return ResponseEntity.ok(setorService.autalizar(id, dto));
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>deletar(@PathVariable Long id){
