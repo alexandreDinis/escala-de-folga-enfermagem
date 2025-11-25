@@ -1,5 +1,6 @@
-package com.oroboros.EscalaDeFolga.infrastructure.exeption;
+package com.oroboros.EscalaDeFolga.infrastructure.exception;
 
+import com.oroboros.EscalaDeFolga.domain.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.Ordered;

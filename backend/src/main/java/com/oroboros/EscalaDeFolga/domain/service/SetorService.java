@@ -4,11 +4,10 @@ import com.oroboros.EscalaDeFolga.app.dto.setor.SetorRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.setor.SetorResponseDTO;
 import com.oroboros.EscalaDeFolga.app.dto.setor.SetorUpdateDTO;
 import com.oroboros.EscalaDeFolga.app.mapper.SetorMapper;
-import com.oroboros.EscalaDeFolga.domain.exception.SetorNotFoundExeption;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
 import com.oroboros.EscalaDeFolga.domain.util.TextoNormalizerUtil;
 import com.oroboros.EscalaDeFolga.domain.validation.setor.SetorValidadorComposite;
-import com.oroboros.EscalaDeFolga.infrastructure.exeption.BusinessException;
+import com.oroboros.EscalaDeFolga.domain.exception.BusinessException;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.SetorRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +69,7 @@ public class SetorService {
 
     public Setor buscarPorId(Long id) {
         return setorRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(String.format("Setor com ID %d não encontrado.", id)));
+                .orElseThrow(() -> new BusinessException("Setor", id));
     }
 
 
@@ -81,7 +80,7 @@ public class SetorService {
 
     public SetorResponseDTO autalizar(Long id, SetorUpdateDTO dto) {
         Setor setorExistente = setorRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(String.format("Setor com ID %d não encontrado.", id)));
+                .orElseThrow(() -> new BusinessException("Setor", id));
 
         if (dto.nome() != null) {
 
@@ -118,7 +117,7 @@ public class SetorService {
 
     public void deletar(Long id) {
         Setor setor = setorRepository.findById(id)
-                .orElseThrow(SetorNotFoundExeption::new);
+                .orElseThrow(() -> new BusinessException("Setor", id));
         setor.deletar();
         setorRepository.save(setor);
     }

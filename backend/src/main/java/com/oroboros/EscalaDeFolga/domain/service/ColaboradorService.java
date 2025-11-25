@@ -1,38 +1,35 @@
 package com.oroboros.EscalaDeFolga.domain.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.AuditoriaInfoDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorResponseDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorUpdateDTO;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.AcaoAuditoriaEnum;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
+import com.oroboros.EscalaDeFolga.domain.exception.BusinessException;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.AuditoriaColaboradorRepository;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.ColaboradorRepository;
 import com.oroboros.EscalaDeFolga.app.mapper.ColaboradorMapper;
 import com.oroboros.EscalaDeFolga.util.JsonUtil;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ColaboradorService {
 
-    @Autowired
-    private ColaboradorRepository colaboradorRepository;
+    private final ColaboradorRepository colaboradorRepository;
 
-    @Autowired
-    private AuditoriaColaboradorRepository auditoriaRepository;
+    private final AuditoriaColaboradorRepository auditoriaRepository;
 
-    @Autowired
-    private AuditoriaColaboradorService auditoriaService;
+    private final AuditoriaColaboradorService auditoriaService;
 
-    private ColaboradorMapper colaboradorMapper;
+    private final ColaboradorMapper colaboradorMapper;
 
 
-    public ColaboradorResponseDTO cadastrar(ColaboradorRequestDTO colaboradorDTO, AuditoriaInfoDTO auditor) throws JsonProcessingException {
+    public ColaboradorResponseDTO cadastrar(ColaboradorRequestDTO colaboradorDTO, AuditoriaInfoDTO auditor)  {
 
         Colaborador colaborador = colaboradorMapper.toEntity(colaboradorDTO);
 
@@ -63,16 +60,14 @@ public class ColaboradorService {
 
     public ColaboradorResponseDTO buscarPorId(Long id) {
         Colaborador colaborador = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não há colaborador com esse id " + id + " em nosso banco de dados."));
+                .orElseThrow(() -> new BusinessException("Colaborador", id));
         return colaboradorMapper.toResponse(colaborador);
     }
 
 
     public void inativar(Long id, AuditoriaInfoDTO auditor) {
         Colaborador colaborador = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Não há colaborador com esse id " + id + " em nosso banco de dados."
-                ));
+                .orElseThrow(() -> new BusinessException("Colaborador", id));
 
         String dadosAnteriores = JsonUtil.toJson(colaborador);
 
@@ -92,9 +87,7 @@ public class ColaboradorService {
 
     public ColaboradorResponseDTO atualizar(Long id, AuditoriaInfoDTO auditor, ColaboradorUpdateDTO colaboradorUpdateDTO) {
         Colaborador colaborador = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Não há colaborador com esse id " + id + " em nosso banco de dados."
-                ));
+                .orElseThrow(() -> new BusinessException("Colaborador", id));
 
         String dadosAnteriores = JsonUtil.toJson(colaborador);
 

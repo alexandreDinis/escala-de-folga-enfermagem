@@ -1,4 +1,4 @@
-package com.oroboros.EscalaDeFolga.infrastructure.exeption;
+package com.oroboros.EscalaDeFolga.domain.exception;
 
 public class BusinessException extends RuntimeException {
 
