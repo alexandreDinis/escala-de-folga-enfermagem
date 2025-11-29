@@ -78,7 +78,7 @@ public class SetorService {
     }
 
 
-    public SetorResponseDTO autalizar(Long id, SetorUpdateDTO dto) {
+    public SetorResponseDTO atualizar(Long id, SetorUpdateDTO dto) {
         Setor setorExistente = setorRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Setor", id));
 

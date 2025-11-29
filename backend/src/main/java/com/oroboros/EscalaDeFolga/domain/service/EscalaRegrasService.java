@@ -12,9 +12,9 @@ import java.time.YearMonth;
 public class EscalaRegrasService {
 
     private static final int DIAS_TRABALHO_PERMITIDOS = 6;
-    public static final int DIAS_TRABALHO_ANTES_FOLGA = 0;
 
     public static final int DOMINGO_FOLGA_OBRIGATORIA = 1;
+
     public static final int MIN_FOLGAS_POR_SEMANA = 1;
 
 
@@ -25,12 +25,14 @@ public class EscalaRegrasService {
         return contarDiasDaSemanaNoMes(data, DayOfWeek.SATURDAY);
     }
 
+
     /**
      * Conta domingos no mês (folga obrigatória)
      */
     public int contarDomingosNoMes(LocalDate data) {
         return contarDiasDaSemanaNoMes(data, DayOfWeek.SUNDAY);
     }
+
 
     /**
      * Método genérico para contar dias da semana
@@ -59,8 +61,6 @@ public class EscalaRegrasService {
      * 3- dividir colaboradores por domingo
      * 4 - resto da divisao e divide pela diferença da quantidade de dias restante para obter quantas pessoas podem folgar no dia.
      */
-
-
     public int calculaMediaDeFolgaPorDia(
             int totalDiasNoMes,
             int totalColaboradores,
@@ -90,6 +90,8 @@ public class EscalaRegrasService {
 
         return dia == DayOfWeek.SUNDAY ? folgasPorDomingo : folgasPorDiaDaSemana;
     }
+
+
     public int getDiasTrabalhoPermitidos() {
         return DIAS_TRABALHO_PERMITIDOS;
     }

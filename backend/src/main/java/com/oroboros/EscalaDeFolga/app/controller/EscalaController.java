@@ -9,6 +9,7 @@ import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.service.EscalaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class EscalaController {
         Escala escala = escalaMapper.toEntity(request);
         Escala criada = escalaService.criarEscala(escala);
 
-        return ResponseEntity.ok(escalaMapper.toResponse(criada));
+        return ResponseEntity.status(HttpStatus.CREATED).body(escalaMapper.toResponse(criada));
     }
 
     @GetMapping("/{id}")

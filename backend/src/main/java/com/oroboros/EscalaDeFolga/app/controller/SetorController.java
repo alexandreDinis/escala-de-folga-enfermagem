@@ -41,8 +41,8 @@ public class SetorController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<SetorResponseDTO>autalizar(@PathVariable Long id, @RequestBody SetorUpdateDTO dto) {
-        return ResponseEntity.ok(setorService.autalizar(id, dto));
+    public ResponseEntity<SetorResponseDTO>atualizar(@PathVariable Long id, @RequestBody SetorUpdateDTO dto) {
+        return ResponseEntity.ok(setorService.atualizar(id, dto));
     }
 
 

@@ -4,7 +4,6 @@ import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaResponseDTO;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
-import jakarta.persistence.EntityManager;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
