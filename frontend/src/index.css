@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Cores Institucionais Rede D'Or */
+    --color-primary: #003DA5;
+    --color-primary-dark: #002D7A;
+    --color-primary-light: #E3F2FD;
+    --color-secondary: #FF8200;
+    --color-secondary-dark: #E67300;
+    --color-secondary-light: #FFF3E0;
+    
+    /* Tons de Cinza */
+    --color-gray-50: #FAFAFA;
+    --color-gray-100: #F5F5F5;
+    --color-gray-900: #1A1A1A;
+    
+    /* Sombras Premium */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-primary: 0 10px 25px -5px rgba(0, 61, 165, 0.15);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #FAFAFA;
+    color: #1A1A1A;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Títulos */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1A1A1A;
+  }
+
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1rem; }
+}
+
+@layer components {
+  /* ========================================
+     BOTÕES PREMIUM
+     ======================================== */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold;
+    @apply transition-all duration-300 cursor-pointer;
+    @apply focus:outline-none focus:ring-4 focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    font-size: 0.9375rem;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white;
+    @apply hover:bg-primary-dark hover:shadow-primary;
+    @apply focus:ring-primary/30;
+    @apply active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white;
+    @apply hover:bg-secondary-dark hover:shadow-lg;
+    @apply focus:ring-secondary/30;
+    @apply active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary bg-white;
+    @apply hover:bg-primary hover:text-white;
+    @apply focus:ring-primary/30;
+  }
+
+  .btn-ghost {
+    @apply text-gray-700 bg-transparent;
+    @apply hover:bg-gray-100;
+    @apply focus:ring-gray-300;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-base;
+  }
+
+  /* ========================================
+     CARDS PREMIUM
+     ======================================== */
+  .card {
+    @apply bg-white rounded-2xl shadow-md;
+    @apply transition-all duration-300;
+    @apply hover:shadow-xl;
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-100;
+  }
+
+  .card-footer {
+    @apply px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl;
+  }
+
+  /* ========================================
+     INPUTS PREMIUM
+     ======================================== */
+  .input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg;
+    @apply bg-white text-gray-900 placeholder-gray-400;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary;
+    @apply disabled:bg-gray-50 disabled:cursor-not-allowed;
+    font-size: 0.9375rem;
+  }
+
+  .input-error {
+    @apply border-error focus:ring-error/20 focus:border-error;
+  }
+
+  .label {
+    @apply block text-sm font-semibold text-gray-700 mb-2;
+  }
+
+  .input-group {
+    @apply mb-4;
+  }
+
+  /* ========================================
+     SELECT PREMIUM
+     ======================================== */
+  .select {
+    @apply input appearance-none cursor-pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+
+  /* ========================================
+     BADGES PREMIUM
+     ======================================== */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold;
+    @apply transition-all duration-200;
+  }
+
+  .badge-success {
+    @apply bg-success-light text-success-dark;
+  }
+
+  .badge-error {
+    @apply bg-error-light text-error-dark;
+  }
+
+  .badge-warning {
+    @apply bg-warning-light text-warning-dark;
+  }
+
+  .badge-info {
+    @apply bg-info-light text-info-dark;
+  }
+
+  .badge-primary {
+    @apply bg-primary-light text-primary-dark;
+  }
+
+  /* ========================================
+     TABELAS PREMIUM
+     ======================================== */
+  .table-container {
+    @apply overflow-x-auto rounded-xl border border-gray-200;
+  }
+
+  .table {
+    @apply w-full;
+  }
+
+  .table thead {
+    @apply bg-gray-50;
+  }
+
+  .table th {
+    @apply px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider;
+  }
+
+  .table td {
+    @apply px-6 py-4 text-sm text-gray-900 border-t border-gray-100;
+  }
+
+  .table tbody tr {
+    @apply transition-colors duration-150;
+    @apply hover:bg-gray-50;
+  }
+
+  /* ========================================
+     MODAIS PREMIUM
+     ======================================== */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50;
+    @apply flex items-center justify-center p-4;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .modal-content {
+    @apply bg-white rounded-2xl shadow-2xl max-w-lg w-full;
+    @apply transform transition-all;
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .modal-header {
+    @apply px-6 py-5 border-b border-gray-100;
+  }
+
+  .modal-body {
+    @apply px-6 py-5;
+  }
+
+  .modal-footer {
+    @apply px-6 py-4 bg-gray-50 rounded-b-2xl;
+    @apply flex items-center justify-end gap-3;
+  }
+
+  /* ========================================
+     LOADING PREMIUM
+     ======================================== */
+  .spinner {
+    @apply inline-block w-6 h-6 border-[3px] border-primary/20 border-t-primary rounded-full;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .spinner-lg {
+    @apply w-12 h-12 border-4;
+  }
+}
+
+@layer utilities {
+  /* ========================================
+     ANIMAÇÕES
+     ======================================== */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  /* ========================================
+     SCROLLBAR PREMIUM
+     ======================================== */
+  .scrollbar-premium::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar-premium::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  .scrollbar-premium::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+    @apply hover:bg-gray-400;
+  }
+
+  /* ========================================
+     UTILITÁRIOS PERSONALIZADOS
+     ======================================== */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .shadow-primary {
+    box-shadow: var(--shadow-primary);
+  }
+}
+
+/* ========================================
+   ESTILOS GLOBAIS
+   ======================================== */
+
+/* Remover spinner de inputs number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Foco visível para acessibilidade */
+*:focus-visible {
+  @apply outline-none ring-4 ring-primary/20 ring-offset-2;
+}
+
+/* Seleção de texto */
+::selection {
+  @apply bg-primary/20 text-primary-dark;
+}
