@@ -6,6 +6,7 @@ import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusEscalaEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -18,14 +19,19 @@ public interface EscalaRepository extends JpaRepository<Escala, Long> {
 
     @Query("""
     SELECT e FROM Escala e
-    WHERE 
+    WHERE\s
         e.setor = :setor AND
         e.turno = :turno AND
         (
-            (e.mes = :mes - 1 AND e.ano = :ano)
+            (e.mes = :mes - 1 AND e.ano = :ano AND :mes > 1)
             OR (:mes = 1 AND e.mes = 12 AND e.ano = :ano - 1)
         )
 """)
-    Optional<Escala> findEscalaAnterior(int mes, int ano, TurnoEnum turno, Setor setor);
+    Optional<Escala> findEscalaAnterior(
+            @Param("mes") int mes,
+            @Param("ano") int ano,
+            @Param("turno") TurnoEnum turno,
+            @Param("setor") Setor setor
+    );
 
 }

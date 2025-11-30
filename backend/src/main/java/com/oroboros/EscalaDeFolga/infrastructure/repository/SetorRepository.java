@@ -21,4 +21,6 @@ public interface SetorRepository extends JpaRepository<Setor, Long> {
     List<Setor> findByNomeNormalizadoContaining(String nomeNormalizado);
 
     Optional<Setor> findByNomeNormalizado(String nomeNormalizado);
+
+    Page<Setor> findByAtivoTrueAndNomeNormalizadoContaining(String nomeNormalizado, Pageable pageable);
 }
