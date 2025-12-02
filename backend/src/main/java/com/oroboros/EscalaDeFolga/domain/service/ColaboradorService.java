@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class ColaboradorService {
@@ -111,5 +113,26 @@ public class ColaboradorService {
         );
 
         return colaboradorMapper.toResponse(colaborador);
+    }
+
+    /**
+            * Busca colaborador como entidade (para manipulação interna)
+     */
+    public Colaborador buscarPorIdEntity(Long id) {
+        return colaboradorRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Colaborador", id));
+    }
+
+    /**
+     * Atualiza última folga do colaborador manualmente
+     */
+    public ColaboradorResponseDTO atualizarUltimaFolga(Long id, LocalDate ultimaFolga) {
+        Colaborador colaborador = buscarPorIdEntity(id);
+
+        colaborador.setUltimaFolga(ultimaFolga);
+
+        Colaborador atualizado = colaboradorRepository.save(colaborador);
+
+        return colaboradorMapper.toResponse(atualizado);
     }
 }

@@ -73,8 +73,17 @@ public class SetorService {
     }
 
 
-    public Page<SetorResponseDTO> listar(Pageable pageable) {
-        return setorRepository.findByAtivoTrue(pageable).map(setorMapper::toResponse);
+    public Page<SetorResponseDTO> listar(Pageable pageable, String search) {
+        // Se houver busca, normaliza e busca por nome normalizado
+        if (search != null && !search.isBlank()) {
+            String nomeNormalizado = TextoNormalizerUtil.normalizar(search);
+            return setorRepository.findByAtivoTrueAndNomeNormalizadoContaining(nomeNormalizado, pageable)
+                    .map(setorMapper::toResponse);
+        }
+
+        // Se não houver busca, retorna todos
+        return setorRepository.findByAtivoTrue(pageable)
+                .map(setorMapper::toResponse);
     }
 
 

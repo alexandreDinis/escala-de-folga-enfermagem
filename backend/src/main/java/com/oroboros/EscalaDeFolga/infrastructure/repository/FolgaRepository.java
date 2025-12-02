@@ -54,4 +54,28 @@ public interface FolgaRepository extends JpaRepository<Folga, Long> {
             Escala escala,
             List<StatusFolgaEnum> status
     );
+
+    // Busca folgas de uma data específica
+    List<Folga> findByDataSolicitadaAndEscala(LocalDate data, Escala escala);
+
+    // Conta folgas em uma data com status específicos
+    @Query("SELECT COUNT(f) FROM Folga f WHERE f.dataSolicitada = :data " +
+            "AND f.status IN :status")
+    long countByDataSolicitadaAndStatusIn(
+            @Param("data") LocalDate data,
+            @Param("status") List<StatusFolgaEnum> status
+    );
+
+    /**
+     * Conta folgas em uma data específica com status filtrados
+     */
+    @Query("SELECT COUNT(f) FROM Folga f " +
+            "WHERE f.escala = :escala " +
+            "AND f.dataSolicitada = :data " +
+            "AND f.status IN :status")
+    long countByEscalaAndDataSolicitadaAndStatusIn(
+            @Param("escala") Escala escala,
+            @Param("data") LocalDate data,
+            @Param("status") List<StatusFolgaEnum> status
+    );
 }

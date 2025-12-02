@@ -35,8 +35,11 @@ public class SetorController {
 
 
     @GetMapping
-    public ResponseEntity<Page<SetorResponseDTO>>listar(Pageable pageable){
-        return ResponseEntity.ok(setorService.listar(pageable));
+    public ResponseEntity<Page<SetorResponseDTO>> listar(
+            Pageable pageable,
+            @RequestParam(required = false) String search // ✅ NOVO parâmetro
+    ) {
+        return ResponseEntity.ok(setorService.listar(pageable, search));
     }
 
 

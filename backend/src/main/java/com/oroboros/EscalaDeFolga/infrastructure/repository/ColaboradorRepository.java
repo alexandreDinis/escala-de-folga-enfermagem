@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -37,5 +38,11 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
             Setor setor,
             TurnoEnum turno
     );
+
+    List<Colaborador> findBySetorAndTurno(Setor setor, TurnoEnum turno);
+
+    long countBySetorAndTurno(Setor setor, TurnoEnum turno);
+
+
 }
 

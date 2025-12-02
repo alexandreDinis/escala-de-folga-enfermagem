@@ -1,10 +1,7 @@
 package com.oroboros.EscalaDeFolga.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.AuditoriaInfoDTO;
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorRequestDTO;
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorResponseDTO;
-import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorUpdateDTO;
+import com.oroboros.EscalaDeFolga.app.dto.colaborador.*;
 import com.oroboros.EscalaDeFolga.domain.service.ColaboradorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -16,7 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("api/colaborador")
 @SecurityRequirement(name = "bearer-key")
@@ -26,7 +25,7 @@ public class ColaboradorController {
     private ColaboradorService colaboradorService;
 
     @PostMapping
-    public ResponseEntity<ColaboradorResponseDTO> cadastrar (@RequestBody @Valid ColaboradorRequestDTO colaborador) throws JsonProcessingException {
+    public ResponseEntity<ColaboradorResponseDTO> cadastrar(@RequestBody @Valid ColaboradorRequestDTO colaborador) throws JsonProcessingException {
 
         // 🔹 Para testes, dados fictícios
         //todo Mudar após a implementação de segurança
@@ -36,23 +35,21 @@ public class ColaboradorController {
                 null,        // ipOrigem
                 null         // userAgent
         );
-        ColaboradorResponseDTO  colaboradorResponse  = colaboradorService.cadastrar(colaborador, auditor);
+        ColaboradorResponseDTO colaboradorResponse = colaboradorService.cadastrar(colaborador, auditor);
         return ResponseEntity.ok().body(colaboradorResponse);
     }
 
     @GetMapping
-    public Page<ColaboradorResponseDTO> listar ( @ParameterObject
-                                                     @PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
+    public Page<ColaboradorResponseDTO> listar(@ParameterObject
+                                               @PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
         return colaboradorService.listar(pageable);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ColaboradorResponseDTO> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<ColaboradorResponseDTO> buscarPorId(@PathVariable Long id) {
         var colaborador = colaboradorService.buscarPorId(id);
         return ResponseEntity.ok(colaborador);
     }
-
-
 
 
     @DeleteMapping("{id}")
@@ -67,13 +64,13 @@ public class ColaboradorController {
                 null         // userAgent
         );
 
-        colaboradorService.inativar(id,  auditor);
+        colaboradorService.inativar(id, auditor);
         return ResponseEntity.noContent().build();
     }
 
 
     @PutMapping("{id}")
-    public ResponseEntity<ColaboradorResponseDTO>atualizar(@PathVariable Long id, @RequestBody ColaboradorUpdateDTO colaboradorUpdateDTO){
+    public ResponseEntity<ColaboradorResponseDTO> atualizar(@PathVariable Long id, @RequestBody ColaboradorUpdateDTO colaboradorUpdateDTO) {
 
         // 🔹 Para testes, dados fictícios
         //todo Mudar após a implementação de segurança
@@ -88,9 +85,20 @@ public class ColaboradorController {
         return ResponseEntity.ok().body(colaboradorResponseDTO);
     }
 
+    /**
+     * PUT /api/colaborador/{id}/ultima-folga
+     * Cadastra/atualiza última folga do colaborador manualmente
+     */
+    @PutMapping("{id}/ultima-folga")
+    public ResponseEntity<ColaboradorResponseDTO> atualizarUltimaFolga(
+            @PathVariable Long id,
+            @RequestBody @Valid UltimaFolgaUpdateDTO dto
+    ) {
+        ColaboradorResponseDTO response = colaboradorService.atualizarUltimaFolga(id, dto.ultimaFolga());
+        return ResponseEntity.ok(response);
+    }
+
 }
-
-
 
 
 
