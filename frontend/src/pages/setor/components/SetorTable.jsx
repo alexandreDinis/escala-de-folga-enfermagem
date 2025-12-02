@@ -1,78 +1,75 @@
-import { Edit, Trash2, Building2 } from 'lucide-react';
-import { Button } from '../../../components/common';
+import { Edit, Trash2 } from 'lucide-react';
+import { SkeletonLoader, ErrorState, EmptyState } from '../../../components/common';
 
 /**
  * ========================================
- * TABELA DE SETORES - REDESIGN OTIMIZADO
+ * TABELA DE SETORES - COM ESTADOS
  * ========================================
  */
 
-export function SetorTable({ setores, loading, onEdit, onDelete }) {
+export function SetorTable({ setores, loading, error, onEdit, onDelete, onRetry, onCreate }) {
+  
+  console.log('🔍 SetorTable:', { loading, error, setores });
+  
+  // ========================================
+  // ESTADO: LOADING
+  // ========================================
   if (loading) {
+    console.log('✅ Mostrando LOADING');
+    return <SkeletonLoader rows={5} />;
+  }
+
+  // ========================================
+  // ESTADO: ERROR (PRIORIDADE!)
+  // ========================================
+  if (error) {
+    console.log('❌ Mostrando ERROR:', error);
     return (
-      <div className="flex items-center justify-center py-16">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-500">Carregando setores...</p>
-        </div>
-      </div>
+      <ErrorState 
+        message={error.message || error.friendlyMessage || 'Erro ao carregar setores'} 
+        onRetry={onRetry}
+      />
     );
   }
 
+  // ========================================
+  // ESTADO: EMPTY (DEPOIS DO ERROR!)
+  // ========================================
   if (!setores || setores.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <p className="text-gray-500 text-lg font-semibold mb-2">
-          Nenhum setor encontrado
-        </p>
-        <p className="text-gray-400 text-sm">
-          Clique em "Novo Setor" para adicionar o primeiro setor
-        </p>
-      </div>
-    );
+    console.log('📋 Mostrando EMPTY');
+    return <EmptyState onAction={onCreate} />;
   }
 
+  // ========================================
+  // ESTADO: SUCCESS (DADOS)
+  // ========================================
+  console.log('✅ Mostrando DADOS:', setores.length, 'setores');
+  
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
-        {/* ========================================
-            HEADER - Mais Compacto
-            ======================================== */}
         <thead className="bg-gray-50">
           <tr>
-            {/* Nome - 60% largura */}
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-3/5">
               Nome do Setor
             </th>
-            
-            {/* Status - 20% largura */}
             <th className="px-6 py-3.5 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider w-1/5">
               Status
             </th>
-            
-            {/* Ações - 20% largura */}
             <th className="px-6 py-3.5 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider w-1/5">
               Ações
             </th>
           </tr>
         </thead>
 
-        {/* ========================================
-            BODY - Design Limpo e Compacto
-            ======================================== */}
         <tbody className="bg-white divide-y divide-gray-100">
           {setores.map((setor, index) => (
             <tr 
               key={setor.id} 
               className="hover:bg-gray-50 transition-colors duration-150 group"
             >
-              {/* ========================================
-                  COLUNA NOME - Sem ícone, mais espaço
-                  ======================================== */}
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
-                  {/* Badge numérico pequeno */}
                   <div className="flex-shrink-0">
                     <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center shadow-sm">
                       <span className="text-white font-bold text-xs">
@@ -81,7 +78,6 @@ export function SetorTable({ setores, loading, onEdit, onDelete }) {
                     </div>
                   </div>
                   
-                  {/* Nome do setor */}
                   <div>
                     <p className="text-sm font-semibold text-gray-900 leading-tight">
                       {setor.nome}
@@ -90,9 +86,6 @@ export function SetorTable({ setores, loading, onEdit, onDelete }) {
                 </div>
               </td>
 
-              {/* ========================================
-                  COLUNA STATUS - Centralizado e Compacto
-                  ======================================== */}
               <td className="px-6 py-4">
                 <div className="flex justify-center">
                   <span className={`
@@ -108,9 +101,6 @@ export function SetorTable({ setores, loading, onEdit, onDelete }) {
                 </div>
               </td>
 
-              {/* ========================================
-                  COLUNA AÇÕES - Botões Icônicos Compactos
-                  ======================================== */}
               <td className="px-6 py-4">
                 <div className="flex items-center justify-end gap-2">
                   <button

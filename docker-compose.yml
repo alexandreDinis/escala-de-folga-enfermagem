@@ -1,7 +1,7 @@
-version: '3.8'
-
 services:
-  # Banco de dados PostgreSQL
+  # ==========================================
+  # POSTGRESQL
+  # ==========================================
   postgres:
     image: postgres:15-alpine
     container_name: escala-folga-db
@@ -20,11 +20,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
-  # Backend - Spring Boot
+  # ==========================================
+  # BACKEND - SPRING BOOT
+  # ==========================================
   backend:
     build:
-      context: ./backend          # ← Aponta para pasta backend
+      context: ./backend
       dockerfile: Dockerfile
     container_name: escala-folga-backend
     environment:
@@ -32,7 +35,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
-      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL:-true}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL:-false}
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
@@ -43,23 +46,32 @@ services:
         condition: service_healthy
     networks:
       - escala-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 80s  # ✅ Aumentado para 80s
     restart: unless-stopped
 
-  # Frontend (futuro - descomente quando tiver)
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: escala-folga-frontend
-  #   ports:
-  #     - "${FRONTEND_PORT:-3000}:3000"
-  #   environment:
-  #     REACT_APP_API_URL: http://backend:8080/api
-  #   depends_on:
-  #     - backend
-  #   networks:
-  #     - escala-network
-  #   restart: unless-stopped
+  # ==========================================
+  # FRONTEND - REACT + NGINX
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: escala-folga-frontend
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-/api}
+    depends_on:
+      backend:
+        condition: service_healthy  # ✅ Espera backend HEALTHY
+    networks:
+      - escala-network
+    restart: unless-stopped
 
 volumes:
   postgres-data:

@@ -43,13 +43,11 @@ export default function SetorPage() {
   const [reactivateData, setReactivateData] = useState(null); // ✅ NOVO: dados para reativação
 
   // Query: Listar setores
-  const { data, isLoading, error, refetch } = useQuery({
-  queryKey: ['setores', page, size, search],
-  queryFn: () => setorService.listar({ page, size, search }),
-  keepPreviousData: true,
-  retry: 3, // ✅ Tentar 3x antes de falhar
-  retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // ✅ Backoff exponencial
-});
+  const { data, isLoading } = useQuery({
+    queryKey: ['setores', page, size, search],
+    queryFn: () => setorService.listar({ page, size, search }),
+    keepPreviousData: true,
+  });
 
   // Mutation: Criar setor
   const createMutation = useMutation({
@@ -287,11 +285,8 @@ export default function SetorPage() {
         <SetorTable
           setores={data?.content || []}
           loading={isLoading}
-          error={error}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          onRetry={refetch} 
-          onCreate={handleCreate}
         />
 
         {data && data.content && data.content.length > 0 && (
