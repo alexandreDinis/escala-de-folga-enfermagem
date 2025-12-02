@@ -2,6 +2,8 @@ package com.oroboros.EscalaDeFolga.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.*;
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.CargoEnum;
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import com.oroboros.EscalaDeFolga.domain.service.ColaboradorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -40,9 +42,15 @@ public class ColaboradorController {
     }
 
     @GetMapping
-    public Page<ColaboradorResponseDTO> listar(@ParameterObject
-                                               @PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable) {
-        return colaboradorService.listar(pageable);
+    public Page<ColaboradorResponseDTO> listar(
+            @ParameterObject
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 10) Pageable pageable,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long setorId,
+            @RequestParam(required = false) TurnoEnum turno,
+            @RequestParam(required = false) CargoEnum cargo
+    ) {
+        return colaboradorService.listar(pageable, search, setorId, turno, cargo);
     }
 
     @GetMapping("{id}")

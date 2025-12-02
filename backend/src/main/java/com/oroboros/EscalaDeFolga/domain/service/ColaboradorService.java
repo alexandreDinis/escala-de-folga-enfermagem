@@ -5,8 +5,10 @@ import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorRequestDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorResponseDTO;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.ColaboradorUpdateDTO;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.AcaoAuditoriaEnum;
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.CargoEnum;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.exception.BusinessException;
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.AuditoriaColaboradorRepository;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.ColaboradorRepository;
 import com.oroboros.EscalaDeFolga.app.mapper.ColaboradorMapper;
@@ -55,8 +57,21 @@ public class ColaboradorService {
     }
 
 
-    public Page<ColaboradorResponseDTO> listar(Pageable pageable) {
-        return colaboradorRepository.findByAtivoTrue(pageable).map(colaboradorMapper::toResponse);
+    public Page<ColaboradorResponseDTO> listar(
+            Pageable pageable,
+            String search,
+            Long setorId,
+            TurnoEnum turno,
+            CargoEnum cargo
+    ) {
+        // Se não tem filtros, busca todos ativos
+        if ((search == null || search.isBlank()) && setorId == null && turno == null && cargo == null) {
+            return colaboradorRepository.findByAtivoTrue(pageable).map(colaboradorMapper::toResponse);
+        }
+
+        // Se tem filtros, usa query customizada
+        return colaboradorRepository.buscarComFiltros(search, setorId, turno, cargo, pageable)
+                .map(colaboradorMapper::toResponse);
     }
 
 
@@ -86,6 +101,8 @@ public class ColaboradorService {
                 JsonUtil.toJson(colaborador)
         );
     }
+
+
 
     public ColaboradorResponseDTO atualizar(Long id, AuditoriaInfoDTO auditor, ColaboradorUpdateDTO colaboradorUpdateDTO) {
         Colaborador colaborador = colaboradorRepository.findById(id)

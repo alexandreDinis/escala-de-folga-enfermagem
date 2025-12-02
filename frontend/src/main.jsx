@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { QueryProvider } from './providers/QueryProvider';
 import { NotificationProvider } from './contexts/NotificationContext';
-import { router } from './routes';
+import  router  from './routes';
 import './index.css';
 
 /**

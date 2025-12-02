@@ -19,12 +19,11 @@ public interface ColaboradorMapper {
     default Setor mapSetorFromId(Long setorId) {
         if (setorId == null) return null;
         Setor setor = new Setor();
-        setor.setId(setorId); // Apenas vincula por ID, sem acessar o banco
+        setor.setId(setorId);
         return setor;
     }
 
     @Mapping(target = "setorId", source = "setor.id")
+    @Mapping(target = "setorNome", source = "setor.nome")  // ✅ ADICIONAR
     ColaboradorResponseDTO toResponse(Colaborador entity);
-
 }
-
