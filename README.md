@@ -125,7 +125,7 @@ Docker e Docker Compose
 Entre no diretório do projeto
 
 ```bash
-  cd EscalaDeFolga/backend
+  cd EscalaDeFolga/
 ```
 
 🐋 Subir com Docker
@@ -198,6 +198,17 @@ cd backend
 mvn clean install
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
+
+  Rodar o frontend
+
+  ```bash
+  cd frontend
+  npm install
+  npm run dev
+  ```
+
+  Frontend disponível em: http://localhost:5173
+
 
 📁 Estrutura do Projeto
 
