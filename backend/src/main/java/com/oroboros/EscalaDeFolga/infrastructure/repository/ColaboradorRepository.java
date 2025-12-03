@@ -62,6 +62,16 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
             Pageable pageable
     );
 
+    /**
+     * Busca colaboradores sem histórico de última folga em um setor e turno específicos
+     */
+    List<Colaborador> findBySetorAndTurnoAndUltimaFolgaNull(Setor setor, TurnoEnum turno);
+
+    /**
+     * Conta total de colaboradores ativos em um setor e turno
+     */
+    long countBySetorAndTurnoAndAtivoTrue(Setor setor, TurnoEnum turno);
+
 
 }
 

@@ -2,15 +2,8 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App';
 import ComponentsDemo from '../pages/ComponentsDemo';
 import SetorPage from '../pages/setor/SetorPage';
-import ColaboradorPage from '../pages/colaborador/ColaboradorPage'; 
-import Calendario from '../components/Calendario';
-
-/**
- * ========================================
- * PÁGINAS TEMPORÁRIAS (PLACEHOLDERS)
- * ========================================
- * Remover quando criar as páginas reais
- */
+import ColaboradorPage from '../pages/colaborador/ColaboradorPage';
+import EscalaPage from '../pages/escala/EscalaPage';
 
 function Dashboard() {
   return (
@@ -37,12 +30,6 @@ function Dashboard() {
   );
 }
 
-/**
- * ========================================
- * CONFIGURAÇÃO DE ROTAS
- * ========================================
- */
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -62,11 +49,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'colaboradores',
-        element: <ColaboradorPage />, // ✅ USANDO PÁGINA REAL
+        element: <ColaboradorPage />,
       },
       {
         path: 'escalas',
-        element: <Calendario />,
+        element: <EscalaPage />,
       },
       {
         path: 'folgas',

@@ -1,6 +1,7 @@
 package com.oroboros.EscalaDeFolga.domain.service;
 
 import com.oroboros.EscalaDeFolga.app.dto.escala.EscalaUpdateDTO;
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Escala;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
@@ -17,6 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class EscalaService {
@@ -29,6 +34,8 @@ public class EscalaService {
     private final ValidaExclusaoPossivel validaExclusaoPossivel;
 
     private final EscalaValidatorComposite escalaValidatorComposite;
+
+    private final ColaboradorService colaboradorService;
 
     private final SetorService setorService;
 
@@ -95,6 +102,35 @@ public class EscalaService {
 
         // Se tem filtros, usa query customizada
         return escalaRepository.buscarComFiltros(setorId, turno, status, mes, ano, pageable);
+    }
+
+
+    /**
+     * Verifica histórico de folgas e retorna colaboradores sem histórico
+     *
+     * @param escalaId ID da escala
+     * @return Map com dados brutos (colaboradores e totais)
+     */
+    public Map<String, Object> verificarHistoricoFolgas(Long escalaId) {
+        Escala escala = escalaRepository.findById(escalaId)
+                .orElseThrow(() -> new BusinessException("Escala", escalaId));
+
+        // Buscar colaboradores sem histórico
+        List<Colaborador> colaboradoresSemHistorico = colaboradorService
+                .buscarColaboradoresSemHistorico(escala.getSetor(), escala.getTurno());
+
+        // Contar total de colaboradores
+        long totalColaboradores = colaboradorService
+                .contarColaboradores(escala.getSetor(), escala.getTurno());
+
+        // Retornar dados brutos (Controller fará a conversão)
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("faltaHistorico", !colaboradoresSemHistorico.isEmpty());
+        resultado.put("colaboradoresSemHistorico", colaboradoresSemHistorico);
+        resultado.put("totalSemHistorico", colaboradoresSemHistorico.size());
+        resultado.put("totalColaboradores", (int) totalColaboradores);
+
+        return resultado;
     }
 
 

@@ -9,6 +9,7 @@ import com.oroboros.EscalaDeFolga.domain.model.colaborador.CargoEnum;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.exception.BusinessException;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
+import com.oroboros.EscalaDeFolga.domain.model.escala.Setor;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.AuditoriaColaboradorRepository;
 import com.oroboros.EscalaDeFolga.infrastructure.repository.ColaboradorRepository;
 import com.oroboros.EscalaDeFolga.app.mapper.ColaboradorMapper;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class ColaboradorService {
     private final ColaboradorMapper colaboradorMapper;
 
 
-    public ColaboradorResponseDTO cadastrar(ColaboradorRequestDTO colaboradorDTO, AuditoriaInfoDTO auditor)  {
+    public ColaboradorResponseDTO cadastrar(ColaboradorRequestDTO colaboradorDTO, AuditoriaInfoDTO auditor) {
 
         Colaborador colaborador = colaboradorMapper.toEntity(colaboradorDTO);
 
@@ -103,7 +105,6 @@ public class ColaboradorService {
     }
 
 
-
     public ColaboradorResponseDTO atualizar(Long id, AuditoriaInfoDTO auditor, ColaboradorUpdateDTO colaboradorUpdateDTO) {
         Colaborador colaborador = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Colaborador", id));
@@ -133,7 +134,7 @@ public class ColaboradorService {
     }
 
     /**
-            * Busca colaborador como entidade (para manipulação interna)
+     * Busca colaborador como entidade (para manipulação interna)
      */
     public Colaborador buscarPorIdEntity(Long id) {
         return colaboradorRepository.findById(id)
@@ -151,5 +152,27 @@ public class ColaboradorService {
         Colaborador atualizado = colaboradorRepository.save(colaborador);
 
         return colaboradorMapper.toResponse(atualizado);
+    }
+
+    /**
+     * Busca colaboradores sem histórico de última folga em um setor e turno específicos
+     *
+     * @param setor Setor a verificar
+     * @param turno Turno a verificar
+     * @return Lista de colaboradores sem histórico
+     */
+    public List<Colaborador> buscarColaboradoresSemHistorico(Setor setor, TurnoEnum turno) {
+        return colaboradorRepository.findBySetorAndTurnoAndUltimaFolgaNull(setor, turno);
+    }
+
+    /**
+     * Conta total de colaboradores ativos em um setor e turno
+     *
+     * @param setor Setor a verificar
+     * @param turno Turno a verificar
+     * @return Total de colaboradores
+     */
+    public long contarColaboradores(Setor setor, TurnoEnum turno) {
+        return colaboradorRepository.countBySetorAndTurnoAndAtivoTrue(setor, turno);
     }
 }

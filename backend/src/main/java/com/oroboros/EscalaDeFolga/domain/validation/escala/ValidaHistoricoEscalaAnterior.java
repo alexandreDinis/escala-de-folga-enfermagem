@@ -59,8 +59,7 @@ import java.util.Optional;
  * @see Colaborador#getUltimaFolga()
  */
 
-@Component
-@Order(2) // Após validação de setor, mas antes de duplicidade
+@Order(999)
 @RequiredArgsConstructor
 public class ValidaHistoricoEscalaAnterior implements IEscalaValidator {
 
@@ -69,8 +68,12 @@ public class ValidaHistoricoEscalaAnterior implements IEscalaValidator {
 
     @Override
     public ResultadoValidacao validar(Escala escala) {
+        // VALIDAÇÃO DESABILITADA
+        // Agora permitimos criar escala sem histórico
+        return ResultadoValidacao.ok();
 
-        // Busca escala do mês anterior no mesmo setor e turno
+        /*
+        // CÓDIGO ORIGINAL (comentado)
         Optional<Escala> escalaAnterior = escalaRepository.findEscalaAnterior(
                 escala.getMes(),
                 escala.getAno(),
@@ -79,7 +82,6 @@ public class ValidaHistoricoEscalaAnterior implements IEscalaValidator {
         );
 
         if (escalaAnterior.isEmpty()) {
-            // Verifica se colaboradores possuem última folga registrada
             boolean historicoIncompleto = colaboradorRepository
                     .existsBySetorAndTurnoAndUltimaFolgaNull(escala.getSetor(), escala.getTurno());
 
@@ -93,5 +95,6 @@ public class ValidaHistoricoEscalaAnterior implements IEscalaValidator {
         }
 
         return ResultadoValidacao.ok();
+        */
     }
 }
