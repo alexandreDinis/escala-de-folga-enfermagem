@@ -80,6 +80,20 @@ export const negar = async (id, motivo) => {
   return response.data;
 };
 
+/**
+ * Cadastra histórico de última folga
+ * @param {number} colaboradorId - ID do colaborador
+ * @param {string} dataSolicitada - Data da última folga (YYYY-MM-DD)
+ * @returns {Promise}
+ */
+export const cadastrarHistorico = async (colaboradorId, dataSolicitada) => {
+  const response = await api.post('/folga/historico', {
+    colaboradorId,
+    dataSolicitada,
+  });
+  return response.data;
+};
+
 // Exportação default
 const folgaService = {
   listar,
@@ -89,6 +103,7 @@ const folgaService = {
   deletarFolga,
   aprovar,
   negar,
+  cadastrarHistorico,  
 };
 
 export default folgaService;

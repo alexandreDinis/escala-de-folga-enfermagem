@@ -92,20 +92,6 @@ public class ColaboradorController {
         ColaboradorResponseDTO colaboradorResponseDTO = colaboradorService.atualizar(id, auditor, colaboradorUpdateDTO);
         return ResponseEntity.ok().body(colaboradorResponseDTO);
     }
-
-    /**
-     * PUT /api/colaborador/{id}/ultima-folga
-     * Cadastra/atualiza última folga do colaborador manualmente
-     */
-    @PutMapping("{id}/ultima-folga")
-    public ResponseEntity<ColaboradorResponseDTO> atualizarUltimaFolga(
-            @PathVariable Long id,
-            @RequestBody @Valid UltimaFolgaUpdateDTO dto
-    ) {
-        ColaboradorResponseDTO response = colaboradorService.atualizarUltimaFolga(id, dto.ultimaFolga());
-        return ResponseEntity.ok(response);
-    }
-
 }
 
 

@@ -36,6 +36,11 @@ const escalaService = {
     const response = await api.delete(`/escala/${id}`);
     return response.data;
   },
+
+   verificarHistorico: async (id) => {
+    const response = await api.get(`/escala/${id}/verificar-historico`);
+    return response.data;
+  },
 };
 
 export default escalaService;

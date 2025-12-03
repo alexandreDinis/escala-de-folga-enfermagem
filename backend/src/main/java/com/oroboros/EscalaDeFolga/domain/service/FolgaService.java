@@ -1,5 +1,6 @@
 package com.oroboros.EscalaDeFolga.domain.service;
 
+import com.oroboros.EscalaDeFolga.domain.model.colaborador.Colaborador;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.escala.StatusFolgaEnum;
 import com.oroboros.EscalaDeFolga.domain.model.alerta.Alerta;
@@ -28,6 +29,7 @@ public class FolgaService {
     private final FolgaValidatorComposite validadores;
     private final AlertaService alertaService;
     private final EscalaRegrasService regrasService;
+    private final ColaboradorService colaboradorService;
 
     /**
      * Cria folga (recebe e retorna ENTIDADE)
@@ -149,6 +151,41 @@ public class FolgaService {
 
         return folgaRepository.save(folga);
     }
+
+
+    /**
+     * Cria registro de folga histórica (sem validações de regras de negócio)
+     * Usado apenas para cadastrar histórico de folgas antigas
+     *
+     * @param colaborador Colaborador
+     * @param dataFolga Data da folga
+     */
+    @Transactional
+    public void criarFolgaHistorica(Colaborador colaborador, LocalDate dataFolga) {
+        Folga folgaHistorica = new Folga();
+        folgaHistorica.setColaborador(colaborador);
+        folgaHistorica.setDataSolicitada(dataFolga);
+        folgaHistorica.setStatus(StatusFolgaEnum.APROVADA);
+        folgaHistorica.setJustificativa("Histórico cadastrado manualmente");
+        folgaHistorica.setEscala(null); // Histórico não vinculado a escala específica
+
+        folgaRepository.save(folgaHistorica);
+    }
+
+
+    /**
+     * Cadastra histórico de última folga para um colaborador
+     * Usado para registrar folgas antigas sem criar registro de Folga na escala
+     *
+     * @param colaboradorId ID do colaborador
+     * @param dataUltimaFolga Data da última folga
+     */
+    public void cadastrarHistorico(Long colaboradorId, LocalDate dataUltimaFolga) {
+        // ✅ Usa ColaboradorService ao invés de Repository
+        colaboradorService.atualizarUltimaFolga(colaboradorId, dataUltimaFolga);
+    }
+
+
 
     /**
      * Classe de domínio para próximas folgas (não é DTO!)

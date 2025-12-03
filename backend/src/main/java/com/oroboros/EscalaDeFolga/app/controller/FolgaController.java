@@ -113,6 +113,19 @@ public class FolgaController {
         return ResponseEntity.ok(response);
     }
 
+
+    @PostMapping("/historico")
+    public ResponseEntity<Void> cadastrarHistorico(
+            @Valid @RequestBody HistoricoFolgaRequestDTO request
+    ) {
+        folgaService.cadastrarHistorico(
+                request.colaboradorId(),
+                request.dataSolicitada()
+        );
+
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * DELETE /api/folga/{id}
      * Remove folga pendente

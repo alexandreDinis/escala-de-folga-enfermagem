@@ -45,22 +45,22 @@ export function EscalaFormModal({ isOpen, onClose, escala, onSuccess }) {
   }, [escala, setValue, reset]);
 
   const mutation = useMutation({
-    mutationFn: (data) => {
-      if (isEditing) {
-        return escalaService.atualizar(escala.id, data);
-      }
-      return escalaService.criar(data);
-    },
-    onSuccess: () => {
-      toast.success(isEditing ? 'Escala atualizada com sucesso!' : 'Escala criada com sucesso!');
-      onSuccess();
-      reset();
-    },
-    onError: (error) => {
-      const message = error.response?.data?.message || 'Erro ao salvar escala';
-      toast.error(message);
-    },
-  });
+  mutationFn: (data) => {
+    if (isEditing) {
+      return escalaService.atualizar(escala.id, data);
+    }
+    return escalaService.criar(data);
+  },
+  onSuccess: (data) => {  // ✅ Recebe a resposta da API
+    toast.success(isEditing ? 'Escala atualizada com sucesso!' : 'Escala criada com sucesso!');
+    onSuccess(data.id);  // ✅ Passa o ID para o parent
+    reset();
+  },
+  onError: (error) => {
+    const message = error.response?.data?.message || 'Erro ao salvar escala';
+    toast.error(message);
+  },
+});
 
   const onSubmit = (data) => {
     mutation.mutate({

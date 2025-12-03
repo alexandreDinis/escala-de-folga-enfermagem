@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { Plus, Calendar } from 'lucide-react';
 import { Button, Select, Input } from '../../components/common';
 import { EscalaTable } from './components/EscalaTable';
 import { EscalaFormModal } from './components/EscalaFormModal';
 import { EscalaDeleteModal } from './components/EscalaDeleteModal';
+import { HistoricoFolgaModal } from './components/HistoricoFolgaModal';
+import { CadastroHistoricoModal } from './components/CadastroHistoricoModal';
 import escalaService from '../../services/escala.service';
 import setorService from '../../services/setor.service';
 import toast from 'react-hot-toast';
 
 export default function EscalaPage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
+  // Estados de paginação e filtros
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [setorFilter, setSetorFilter] = useState('');
@@ -20,10 +25,20 @@ export default function EscalaPage() {
   const [mesFilter, setMesFilter] = useState('');
   const [anoFilter, setAnoFilter] = useState('');
 
+  // Estados de modais
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedEscala, setSelectedEscala] = useState(null);
+  
+  // Estados de histórico
+  const [isHistoricoModalOpen, setIsHistoricoModalOpen] = useState(false);
+  const [historicoData, setHistoricoData] = useState(null);
+  
+  // Estados de cadastro de histórico
+  const [isCadastroHistoricoOpen, setIsCadastroHistoricoOpen] = useState(false);
+  const [colaboradorSelecionado, setColaboradorSelecionado] = useState(null);
 
+  // Query de escalas
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['escalas', page, size, setorFilter, turnoFilter, statusFilter, mesFilter, anoFilter],
     queryFn: () => escalaService.listar({
@@ -38,12 +53,14 @@ export default function EscalaPage() {
     staleTime: 30000,
   });
 
+  // Query de setores
   const { data: setoresData } = useQuery({
     queryKey: ['setores-all'],
     queryFn: () => setorService.listar({ page: 0, size: 100 }),
     staleTime: 300000,
   });
 
+  // Mutation de delete
   const deleteMutation = useMutation({
     mutationFn: escalaService.deletar,
     onSuccess: () => {
@@ -58,6 +75,7 @@ export default function EscalaPage() {
     },
   });
 
+  // Handlers
   const handleCreate = () => {
     setSelectedEscala(null);
     setIsFormOpen(true);
@@ -79,10 +97,61 @@ export default function EscalaPage() {
     }
   };
 
-  const handleFormSuccess = () => {
+  const handleFormSuccess = async (escalaId) => {
     queryClient.invalidateQueries(['escalas']);
     setIsFormOpen(false);
     setSelectedEscala(null);
+
+    try {
+      const historico = await escalaService.verificarHistorico(escalaId);
+      
+      if (historico.faltaHistorico) {
+        setHistoricoData(historico);
+        setIsHistoricoModalOpen(true);
+        // Guardar ID da escala para recarregar depois
+        setSelectedEscala({ id: escalaId });
+      } else {
+        toast.success('Escala criada! Redirecionando para o calendário...');
+        setTimeout(() => {
+          navigate(`/escalas/${escalaId}/calendario`);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar histórico:', error);
+      toast.error('Escala criada, mas houve erro ao verificar histórico.');
+    }
+  };
+
+  const handleSelecionarColaborador = (colaborador) => {
+    setColaboradorSelecionado(colaborador);
+    setIsCadastroHistoricoOpen(true);
+  };
+
+  const handleHistoricoSuccess = async () => {
+    setIsCadastroHistoricoOpen(false);
+    setColaboradorSelecionado(null);
+    
+    toast.success('Histórico cadastrado!');
+    
+    // Recarregar dados de histórico
+    if (selectedEscala?.id) {
+      try {
+        const novoHistorico = await escalaService.verificarHistorico(selectedEscala.id);
+        setHistoricoData(novoHistorico);
+        
+        // Se não falta mais histórico, redirecionar
+        if (!novoHistorico.faltaHistorico) {
+          setIsHistoricoModalOpen(false);
+          setSelectedEscala(null);
+          toast.success('Todos os históricos cadastrados! Redirecionando...');
+          setTimeout(() => {
+            navigate(`/escalas/${selectedEscala.id}/calendario`);
+          }, 1500);
+        }
+      } catch (error) {
+        console.error('Erro ao recarregar histórico:', error);
+      }
+    }
   };
 
   const escalas = data?.content || [];
@@ -91,6 +160,7 @@ export default function EscalaPage() {
 
   return (
     <div className="space-y-6">
+      {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -107,6 +177,7 @@ export default function EscalaPage() {
         </Button>
       </div>
 
+      {/* CARDS DE ESTATÍSTICAS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="card p-4">
           <p className="text-sm text-gray-600">Total de Escalas</p>
@@ -132,6 +203,7 @@ export default function EscalaPage() {
         </div>
       </div>
 
+      {/* FILTROS */}
       <div className="card p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Filtros</h3>
         
@@ -178,6 +250,7 @@ export default function EscalaPage() {
         </div>
       </div>
 
+      {/* TABELA */}
       <div className="card">
         <EscalaTable
           escalas={escalas}
@@ -196,6 +269,7 @@ export default function EscalaPage() {
         />
       </div>
 
+      {/* MODAIS */}
       <EscalaFormModal
         isOpen={isFormOpen}
         onClose={() => { setIsFormOpen(false); setSelectedEscala(null); }}
@@ -209,6 +283,26 @@ export default function EscalaPage() {
         escala={selectedEscala}
         onConfirm={handleConfirmDelete}
         isLoading={deleteMutation.isPending}
+      />
+
+      <HistoricoFolgaModal
+        isOpen={isHistoricoModalOpen}
+        onClose={() => {
+          setIsHistoricoModalOpen(false);
+          setSelectedEscala(null);
+        }}
+        dados={historicoData}
+        onSelecionarColaborador={handleSelecionarColaborador}
+      />
+
+      <CadastroHistoricoModal
+        isOpen={isCadastroHistoricoOpen}
+        onClose={() => {
+          setIsCadastroHistoricoOpen(false);
+          setColaboradorSelecionado(null);
+        }}
+        colaborador={colaboradorSelecionado}
+        onSuccess={handleHistoricoSuccess}
       />
     </div>
   );
