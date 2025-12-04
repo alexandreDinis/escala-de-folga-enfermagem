@@ -28,7 +28,6 @@ import java.util.List;
 public class ColaboradorService {
 
     private final ColaboradorRepository colaboradorRepository;
-    private final AuditoriaColaboradorRepository auditoriaRepository;
     private final AuditoriaColaboradorService auditoriaService;
     private final ColaboradorMapper colaboradorMapper;
     private final FolgaService folgaService;
@@ -41,7 +40,6 @@ public class ColaboradorService {
             @Lazy FolgaService folgaService
     ) {
         this.colaboradorRepository = colaboradorRepository;
-        this.auditoriaRepository = auditoriaRepository;
         this.auditoriaService = auditoriaService;
         this.colaboradorMapper = colaboradorMapper;
         this.folgaService = folgaService;
