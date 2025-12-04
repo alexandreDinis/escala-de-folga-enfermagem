@@ -97,6 +97,27 @@ export default function EscalaPage() {
     }
   };
 
+  const handleAbrir = async (escala) => {
+    try {
+      // Verificar histórico
+      const historico = await escalaService.verificarHistorico(escala.id);
+      
+      if (historico.faltaHistorico) {
+        // Falta histórico - abrir modal
+        setHistoricoData(historico);
+        setIsHistoricoModalOpen(true);
+        setSelectedEscala(escala);
+      } else {
+        // Tudo OK - ir direto para calendário
+        toast.success('Abrindo calendário...');
+        navigate(`/escalas/${escala.id}/calendario`);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar histórico:', error);
+      toast.error('Erro ao abrir escala');
+    }
+  };
+
   const handleFormSuccess = async (escalaId) => {
     queryClient.invalidateQueries(['escalas']);
     setIsFormOpen(false);
@@ -108,7 +129,6 @@ export default function EscalaPage() {
       if (historico.faltaHistorico) {
         setHistoricoData(historico);
         setIsHistoricoModalOpen(true);
-        // Guardar ID da escala para recarregar depois
         setSelectedEscala({ id: escalaId });
       } else {
         toast.success('Escala criada! Redirecionando para o calendário...');
@@ -139,11 +159,10 @@ export default function EscalaPage() {
         const novoHistorico = await escalaService.verificarHistorico(selectedEscala.id);
         setHistoricoData(novoHistorico);
         
-        // Se não falta mais histórico, redirecionar
+        // Se não falta mais histórico, abrir calendário
         if (!novoHistorico.faltaHistorico) {
           setIsHistoricoModalOpen(false);
-          setSelectedEscala(null);
-          toast.success('Todos os históricos cadastrados! Redirecionando...');
+          toast.success('✅ Todos os históricos cadastrados! Abrindo calendário...');
           setTimeout(() => {
             navigate(`/escalas/${selectedEscala.id}/calendario`);
           }, 1500);
@@ -258,6 +277,7 @@ export default function EscalaPage() {
           error={error}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onAbrir={handleAbrir}
           onRetry={refetch}
           onCreate={handleCreate}
           currentPage={page}

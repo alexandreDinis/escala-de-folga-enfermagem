@@ -4,6 +4,8 @@ import ComponentsDemo from '../pages/ComponentsDemo';
 import SetorPage from '../pages/setor/SetorPage';
 import ColaboradorPage from '../pages/colaborador/ColaboradorPage';
 import EscalaPage from '../pages/escala/EscalaPage';
+import EscalaCalendarioPage from '../pages/escala/EscalaCalendarioPage';
+
 
 function Dashboard() {
   return (
@@ -56,6 +58,10 @@ const router = createBrowserRouter([
         element: <EscalaPage />,
       },
       {
+      path: 'escalas/:id/calendario',
+      element: <EscalaCalendarioPage />,
+      },
+{
         path: 'folgas',
         element: <div className="p-8">
           <h1 className="text-3xl font-bold mb-4">Folgas</h1>

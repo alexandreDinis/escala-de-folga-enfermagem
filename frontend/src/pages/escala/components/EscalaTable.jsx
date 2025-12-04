@@ -1,4 +1,5 @@
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Calendar } from 'lucide-react';
+import { Button } from '../../../components/common';
 import { SkeletonLoader, ErrorState, EmptyState, Pagination } from '../../../components/common';
 
 const STATUS_CONFIG = {
@@ -40,7 +41,8 @@ export function EscalaTable({
   loading, 
   error, 
   onEdit, 
-  onDelete, 
+  onDelete,
+  onAbrir,  // ✅ ADICIONAR
   onRetry, 
   onCreate,
   currentPage,
@@ -70,7 +72,7 @@ export function EscalaTable({
         onAction={onCreate}
         message="Nenhuma escala encontrada"
         actionLabel="Nova Escala"
-        colSpan={6}
+        colSpan={7}  // ✅ AUMENTAR para 7 (adicionou coluna Abrir)
       />
     );
   }
@@ -176,6 +178,16 @@ export function EscalaTable({
 
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
+                      {/*  BOTÃO ABRIR */}
+                      <button
+                        onClick={() => onAbrir(escala)}
+                        className="p-2 text-gray-400 hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-150 group-hover:opacity-100 opacity-70"
+                        title="Abrir calendário"
+                      >
+                        <Calendar className="w-4 h-4" />
+                      </button>
+
+                      {/* BOTÃO EDITAR */}
                       <button
                         onClick={() => onEdit(escala)}
                         className="p-2 text-gray-400 hover:text-primary hover:bg-primary-light rounded-lg transition-all duration-150 group-hover:opacity-100 opacity-70"
@@ -184,6 +196,7 @@ export function EscalaTable({
                         <Edit className="w-4 h-4" />
                       </button>
                       
+                      {/* BOTÃO DELETAR */}
                       <button
                         onClick={() => onDelete(escala)}
                         className="p-2 text-gray-400 hover:text-error hover:bg-error-light rounded-lg transition-all duration-150 group-hover:opacity-100 opacity-70"
