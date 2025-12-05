@@ -17,11 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EscalaService {
@@ -38,6 +40,8 @@ public class EscalaService {
     private final ColaboradorService colaboradorService;
 
     private final SetorService setorService;
+
+    private final FolgaService folgaService;
 
 
     @Transactional
@@ -106,31 +110,35 @@ public class EscalaService {
 
 
     /**
-     * Verifica histórico de folgas e retorna colaboradores sem histórico
-     *
-     * @param escalaId ID da escala
-     * @return Map com dados brutos (colaboradores e totais)
+     * Verifica quais colaboradores precisam cadastrar histórico de folga
      */
     public Map<String, Object> verificarHistoricoFolgas(Long escalaId) {
-        Escala escala = escalaRepository.findById(escalaId)
-                .orElseThrow(() -> new BusinessException("Escala", escalaId));
+        log.info("🔍 Verificando histórico de folgas para escala {}", escalaId);
 
-        // Buscar colaboradores sem histórico
-        List<Colaborador> colaboradoresSemHistorico = colaboradorService
-                .buscarColaboradoresSemHistorico(escala.getSetor(), escala.getTurno());
+        Escala escala = buscarPorId(escalaId);
 
-        // Contar total de colaboradores
-        long totalColaboradores = colaboradorService
-                .contarColaboradores(escala.getSetor(), escala.getTurno());
+        // Buscar todos os colaboradores do setor/turno
+        List<Colaborador> colaboradores = colaboradorService
+                .buscarPorSetorETurno(escala.getSetor(), escala.getTurno());
 
-        // Retornar dados brutos (Controller fará a conversão)
-        Map<String, Object> resultado = new HashMap<>();
-        resultado.put("faltaHistorico", !colaboradoresSemHistorico.isEmpty());
-        resultado.put("colaboradoresSemHistorico", colaboradoresSemHistorico);
-        resultado.put("totalSemHistorico", colaboradoresSemHistorico.size());
-        resultado.put("totalColaboradores", (int) totalColaboradores);
+        log.info("📊 Total de colaboradores: {}", colaboradores.size());
 
-        return resultado;
+        // ✅ Filtrar colaboradores que NÃO têm histórico válido
+        // Passa a escala como parâmetro
+        List<Colaborador> colaboradoresSemHistorico = colaboradores.stream()
+                .filter(c -> !folgaService.temHistoricoValido(c.getId(), escala))
+                .toList();
+
+        boolean faltaHistorico = !colaboradoresSemHistorico.isEmpty();
+
+        log.info("⚠️ Colaboradores sem histórico válido: {}", colaboradoresSemHistorico.size());
+
+        return Map.of(
+                "faltaHistorico", faltaHistorico,
+                "colaboradoresSemHistorico", colaboradoresSemHistorico,
+                "totalSemHistorico", colaboradoresSemHistorico.size(),
+                "totalColaboradores", colaboradores.size()
+        );
     }
 
 

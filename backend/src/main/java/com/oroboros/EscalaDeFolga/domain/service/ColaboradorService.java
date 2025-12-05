@@ -88,16 +88,14 @@ public class ColaboradorService {
     }
 
 
-    public ColaboradorResponseDTO buscarPorId(Long id) {
-        Colaborador colaborador = colaboradorRepository.findById(id)
+    public Colaborador buscarPorId(Long id) {
+        return colaboradorRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Colaborador", id));
-        return colaboradorMapper.toResponse(colaborador);
     }
 
 
     public void inativar(Long id, AuditoriaInfoDTO auditor) {
-        Colaborador colaborador = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Colaborador", id));
+        Colaborador colaborador = buscarPorId(id);
 
         String dadosAnteriores = JsonUtil.toJson(colaborador);
 
@@ -117,8 +115,8 @@ public class ColaboradorService {
 
 
     public ColaboradorResponseDTO atualizar(Long id, AuditoriaInfoDTO auditor, ColaboradorUpdateDTO colaboradorUpdateDTO) {
-        Colaborador colaborador = colaboradorRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Colaborador", id));
+
+        Colaborador colaborador = buscarPorId(id);
 
         String dadosAnteriores = JsonUtil.toJson(colaborador);
 
@@ -144,13 +142,6 @@ public class ColaboradorService {
         return colaboradorMapper.toResponse(colaborador);
     }
 
-    /**
-     * Busca colaborador como entidade (para manipulação interna)
-     */
-    public Colaborador buscarPorIdEntity(Long id) {
-        return colaboradorRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Colaborador", id));
-    }
 
     /**
      * Atualiza a data da última folga de um colaborador
@@ -168,8 +159,7 @@ public class ColaboradorService {
      */
     @Transactional
     public void atualizarUltimaFolga(Long colaboradorId, LocalDate dataUltimaFolga) {
-        Colaborador colaborador = colaboradorRepository.findById(colaboradorId)
-                .orElseThrow(() -> new BusinessException("Colaborador", colaboradorId));
+        Colaborador colaborador = buscarPorId(colaboradorId);
 
         // Atualiza campo ultima_folga
         colaborador.setUltimaFolga(dataUltimaFolga);
@@ -178,8 +168,6 @@ public class ColaboradorService {
         // ✅ Usa FolgaService para criar registro histórico
         folgaService.criarFolgaHistorica(colaborador, dataUltimaFolga);
     }
-
-
 
 
     /**
@@ -193,6 +181,7 @@ public class ColaboradorService {
         return colaboradorRepository.findBySetorAndTurnoAndUltimaFolgaNull(setor, turno);
     }
 
+
     /**
      * Conta total de colaboradores ativos em um setor e turno
      *
@@ -202,5 +191,15 @@ public class ColaboradorService {
      */
     public long contarColaboradores(Setor setor, TurnoEnum turno) {
         return colaboradorRepository.countBySetorAndTurnoAndAtivoTrue(setor, turno);
+    }
+
+    /**
+     * Busca todos os colaboradores ativos de um setor e turno
+     * Usado para carregar lista do calendário
+     */
+    public List<Colaborador> buscarPorSetorETurno(Setor setor, TurnoEnum turno) {
+
+        return colaboradorRepository
+                .findBySetorAndTurnoAndAtivoTrue(setor, turno);
     }
 }

@@ -27,6 +27,8 @@ public class CalendarioService {
     private final ColaboradorRepository colaboradorRepository;
     private final FolgaRepository folgaRepository;
     private final EscalaRegrasService regrasService;
+    private final FolgaService folgaService;
+    private final ColaboradorService colaboradorService;
 
     /**
      * Gera dados do calendário do mês (retorna domínio, não DTO)
@@ -37,8 +39,8 @@ public class CalendarioService {
         Escala escala = escalaRepository.findById(escalaId)
                 .orElseThrow(() -> new BusinessException("Escala", escalaId));
 
-        List<Colaborador> colaboradores = colaboradorRepository
-                .findBySetorAndTurno(escala.getSetor(), escala.getTurno());
+        List<Colaborador> colaboradores = colaboradorService
+                .buscarPorSetorETurno(escala.getSetor(), escala.getTurno());
 
         if (colaboradores.isEmpty()) {
             throw new BusinessException(
@@ -69,30 +71,32 @@ public class CalendarioService {
     }
 
     /**
-     * Verifica se há colaboradores sem última folga registrada
+     * Verifica se há colaboradores sem histórico válido para a escala
      */
     public AvisoHistoricoDomain verificarHistoricoColaboradores(Long escalaId) {
+        log.info("🔍 Verificando histórico de colaboradores para escala {}", escalaId);
+
         Escala escala = escalaRepository.findById(escalaId)
                 .orElseThrow(() -> new BusinessException("Escala", escalaId));
 
         // Busca todos os colaboradores do setor/turno
-        List<Colaborador> colaboradores = colaboradorRepository
-                .findBySetorAndTurno(escala.getSetor(), escala.getTurno());
+        List<Colaborador> colaboradores = colaboradorService
+                .buscarPorSetorETurno(escala.getSetor(), escala.getTurno());
 
-        // Filtra colaboradores sem última folga ou com folga antiga (>6 dias)
-        LocalDate dataLimite = LocalDate.now().minusDays(6);
-
+        // ✅ Filtra colaboradores que NÃO têm histórico válido
+        // Passa a escala como parâmetro
         List<Colaborador> colaboradoresSemHistorico = colaboradores.stream()
-                .filter(c -> c.getUltimaFolga() == null || c.getUltimaFolga().isBefore(dataLimite))
+                .filter(c -> !folgaService.temHistoricoValido(c.getId(), escala))
                 .toList();
 
         boolean temAvisos = !colaboradoresSemHistorico.isEmpty();
 
         String mensagem = temAvisos
-                ? String.format("Há %d colaborador(es) sem referência de última folga nos últimos 6 dias. " +
-                        "Cadastre a última folga para garantir distribuição correta.",
+                ? String.format("⚠️ %d colaborador(es) precisam cadastrar histórico de folga",
                 colaboradoresSemHistorico.size())
-                : "Todos os colaboradores possuem histórico de folgas atualizado.";
+                : "✅ Todos os colaboradores possuem histórico válido";
+
+        log.info("📊 Resultado: {} colaboradores sem histórico válido", colaboradoresSemHistorico.size());
 
         return new AvisoHistoricoDomain(temAvisos, mensagem, colaboradoresSemHistorico);
     }
@@ -288,7 +292,7 @@ public class CalendarioService {
                 regrasService.getDiasTrabalhoPermitidos(),
                 5,
                 true,
-                5
+                3
         );
     }
 

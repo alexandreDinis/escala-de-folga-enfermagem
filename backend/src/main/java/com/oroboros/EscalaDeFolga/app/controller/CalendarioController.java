@@ -77,4 +77,21 @@ public class CalendarioController {
 
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * GET /api/escala/{id}/com-colaboradores
+     * Retorna escala com lista de colaboradores para o calendário
+     * (compatível com o frontend que espera essa rota)
+     */
+    @GetMapping("/{id}/com-colaboradores")
+    public ResponseEntity<CalendarioResponseDTO> buscarComColaboradores(@PathVariable Long id) {
+        log.info("📅 Buscando escala com colaboradores para ID: {}", id);
+
+        CalendarioService.CalendarioDomain calendarioDomain =
+                calendarioService.gerarCalendario(id);
+
+        CalendarioResponseDTO response = calendarioMapper.toResponse(calendarioDomain);
+
+        return ResponseEntity.ok(response);
+    }
 }

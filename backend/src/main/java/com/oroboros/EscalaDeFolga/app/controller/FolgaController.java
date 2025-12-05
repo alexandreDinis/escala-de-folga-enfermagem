@@ -4,11 +4,13 @@ import com.oroboros.EscalaDeFolga.app.dto.folga.*;
 import com.oroboros.EscalaDeFolga.app.dto.alerta.AlertaDTO;
 import com.oroboros.EscalaDeFolga.app.mapper.FolgaMapper;
 import com.oroboros.EscalaDeFolga.app.mapper.AlertaMapper;
+import com.oroboros.EscalaDeFolga.domain.exception.BusinessException;
 import com.oroboros.EscalaDeFolga.domain.model.escala.Folga;
 import com.oroboros.EscalaDeFolga.domain.model.alerta.Alerta;
 import com.oroboros.EscalaDeFolga.domain.service.FolgaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/folga")
 @RequiredArgsConstructor
+@Slf4j
 public class FolgaController {
 
     private final FolgaService folgaService;
@@ -114,16 +117,50 @@ public class FolgaController {
     }
 
 
+    /**
+     * POST /api/folga/historico
+     * Cadastra histórico de última folga com validação
+     */
     @PostMapping("/historico")
     public ResponseEntity<Void> cadastrarHistorico(
             @Valid @RequestBody HistoricoFolgaRequestDTO request
     ) {
-        folgaService.cadastrarHistorico(
-                request.colaboradorId(),
+        log.info("📝 Cadastrando histórico: colaborador={}, data={}, escala={}",
+                request.colaboradorId(), request.dataSolicitada(), request.escalaId());
+
+        try {
+            folgaService.cadastrarHistorico(
+                    request.colaboradorId(),
+                    request.dataSolicitada(),
+                    request.escalaId()  // ✅ PASSAR escalaId
+            );
+            log.info("✅ Histórico cadastrado com sucesso");
+            return ResponseEntity.noContent().build();
+        } catch (BusinessException e) {
+            log.warn("❌ Erro ao cadastrar histórico: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * POST /api/folga/validar-data-ultima-folga
+     * Valida se a data da última folga é permitida para a escala
+     */
+    @PostMapping("/validar-data-ultima-folga")
+    public ResponseEntity<ValidacaoUltimaFolgaResponseDTO> validarDataUltimaFolga(
+            @Valid @RequestBody ValidarDataUltimaFolgaDTO request
+    ) {
+        log.info("🔍 Validando data de última folga: colaborador={}, data={}, escala={}",
+                request.colaboradorId(), request.dataSolicitada(), request.escalaId());
+
+        ValidacaoUltimaFolgaResponseDTO validacao = folgaService.validarDataUltimaFolga(
+                request.escalaId(),
                 request.dataSolicitada()
         );
 
-        return ResponseEntity.ok().build();
+        log.info("✅ Resultado: válido={}, mensagem={}", validacao.valido(), validacao.mensagem());
+
+        return ResponseEntity.ok(validacao);
     }
 
     /**

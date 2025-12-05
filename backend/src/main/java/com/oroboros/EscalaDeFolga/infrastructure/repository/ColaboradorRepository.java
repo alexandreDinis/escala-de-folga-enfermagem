@@ -72,6 +72,8 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
      */
     long countBySetorAndTurnoAndAtivoTrue(Setor setor, TurnoEnum turno);
 
+    List<Colaborador> findBySetorAndTurnoAndAtivoTrue(Setor setor, TurnoEnum turno);
+
 
 }
 

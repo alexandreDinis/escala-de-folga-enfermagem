@@ -37,6 +37,7 @@ export default function EscalaPage() {
   // Estados de cadastro de histórico
   const [isCadastroHistoricoOpen, setIsCadastroHistoricoOpen] = useState(false);
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState(null);
+  const [escalaIdSelecionada, setEscalaIdSelecionada] = useState(null);  // ✅ ADICIONAR
 
   // Query de escalas
   const { data, isLoading, error, refetch } = useQuery({
@@ -105,8 +106,8 @@ export default function EscalaPage() {
       if (historico.faltaHistorico) {
         // Falta histórico - abrir modal
         setHistoricoData(historico);
-        setIsHistoricoModalOpen(true);
         setSelectedEscala(escala);
+        setIsHistoricoModalOpen(true);
       } else {
         // Tudo OK - ir direto para calendário
         toast.success('Abrindo calendário...');
@@ -128,8 +129,8 @@ export default function EscalaPage() {
       
       if (historico.faltaHistorico) {
         setHistoricoData(historico);
-        setIsHistoricoModalOpen(true);
         setSelectedEscala({ id: escalaId });
+        setIsHistoricoModalOpen(true);
       } else {
         toast.success('Escala criada! Redirecionando para o calendário...');
         setTimeout(() => {
@@ -142,14 +143,17 @@ export default function EscalaPage() {
     }
   };
 
-  const handleSelecionarColaborador = (colaborador) => {
+  // ✅ ATUALIZADO: Passar escalaId ao abrir modal
+  const handleSelecionarColaborador = (colaborador, escalaId) => {
     setColaboradorSelecionado(colaborador);
+    setEscalaIdSelecionada(escalaId);  // ✅ GUARDAR escalaId
     setIsCadastroHistoricoOpen(true);
   };
 
   const handleHistoricoSuccess = async () => {
     setIsCadastroHistoricoOpen(false);
     setColaboradorSelecionado(null);
+    setEscalaIdSelecionada(null);  // ✅ LIMPAR escalaId
     
     toast.success('Histórico cadastrado!');
     
@@ -312,6 +316,7 @@ export default function EscalaPage() {
           setSelectedEscala(null);
         }}
         dados={historicoData}
+        escalaId={selectedEscala?.id}  // ✅ PASSAR escalaId
         onSelecionarColaborador={handleSelecionarColaborador}
       />
 
@@ -320,8 +325,10 @@ export default function EscalaPage() {
         onClose={() => {
           setIsCadastroHistoricoOpen(false);
           setColaboradorSelecionado(null);
+          setEscalaIdSelecionada(null);  // ✅ LIMPAR escalaId
         }}
         colaborador={colaboradorSelecionado}
+        escalaId={escalaIdSelecionada}  // ✅ PASSAR escalaId
         onSuccess={handleHistoricoSuccess}
       />
     </div>

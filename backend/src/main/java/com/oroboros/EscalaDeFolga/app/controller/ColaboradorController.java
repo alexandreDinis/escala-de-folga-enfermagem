@@ -2,6 +2,7 @@ package com.oroboros.EscalaDeFolga.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oroboros.EscalaDeFolga.app.dto.colaborador.*;
+import com.oroboros.EscalaDeFolga.app.mapper.ColaboradorMapper;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.CargoEnum;
 import com.oroboros.EscalaDeFolga.domain.model.colaborador.TurnoEnum;
 import com.oroboros.EscalaDeFolga.domain.service.ColaboradorService;
@@ -25,6 +26,7 @@ public class ColaboradorController {
 
     @Autowired
     private ColaboradorService colaboradorService;
+    private ColaboradorMapper colaboradorMapper;
 
     @PostMapping
     public ResponseEntity<ColaboradorResponseDTO> cadastrar(@RequestBody @Valid ColaboradorRequestDTO colaborador) throws JsonProcessingException {
@@ -56,7 +58,7 @@ public class ColaboradorController {
     @GetMapping("{id}")
     public ResponseEntity<ColaboradorResponseDTO> buscarPorId(@PathVariable Long id) {
         var colaborador = colaboradorService.buscarPorId(id);
-        return ResponseEntity.ok(colaborador);
+        return ResponseEntity.ok(colaboradorMapper.toResponse(colaborador));
     }
 
 

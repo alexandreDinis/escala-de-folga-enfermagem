@@ -12,7 +12,13 @@ const CARGO_CONFIG = {
   TECNICO: { label: 'Técnico(a)', color: 'text-green-700 bg-green-50' },
 };
 
-export function HistoricoFolgaModal({ isOpen, onClose, dados, onSelecionarColaborador }) {
+export function HistoricoFolgaModal({ 
+  isOpen, 
+  onClose, 
+  dados, 
+  escalaId,  // ✅ ADICIONAR
+  onSelecionarColaborador 
+}) {
   if (!dados) return null;
 
   const { colaboradoresSemHistorico, totalSemHistorico, totalColaboradores } = dados;
@@ -80,7 +86,8 @@ export function HistoricoFolgaModal({ isOpen, onClose, dados, onSelecionarColabo
                 return (
                   <button
                     key={colaborador.id}
-                    onClick={() => onSelecionarColaborador(colaborador)}
+                    // ✅ PASSAR escalaId ao chamar onSelecionarColaborador
+                    onClick={() => onSelecionarColaborador(colaborador, escalaId)}
                     className="w-full flex items-center justify-between p-3 bg-white rounded-lg border-2 border-gray-200 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
                   >
                     <div className="flex-1 text-left">

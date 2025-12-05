@@ -84,17 +84,31 @@ export const negar = async (id, motivo) => {
  * Cadastra histórico de última folga
  * @param {number} colaboradorId - ID do colaborador
  * @param {string} dataSolicitada - Data da última folga (YYYY-MM-DD)
+ * @param {number} escalaId - ID da escala (para validação)
  * @returns {Promise}
  */
-export const cadastrarHistorico = async (colaboradorId, dataSolicitada) => {
+export const cadastrarHistorico = async (colaboradorId, dataSolicitada, escalaId) => {
   const response = await api.post('/folga/historico', {
     colaboradorId,
     dataSolicitada,
+    escalaId,  // ✅ ADICIONAR
   });
   return response.data;
 };
 
-// Exportação default
+/**
+ * ✅ Valida se a data da última folga é permitida para a escala
+ * @param {Object} data - { colaboradorId, dataSolicitada, escalaId }
+ * @returns {Promise} - { valido, mensagem, dataMinimPermitida, diasTrabalhoMaximo }
+ */
+export const validarDataUltimaFolga = async (data) => {
+  console.log('📤 Enviando validação:', data);
+  const response = await api.post('/folga/validar-data-ultima-folga', data);
+  console.log('📥 Resposta validação:', response.data);
+  return response.data;
+};
+
+// ✅ Exportação default
 const folgaService = {
   listar,
   buscarPorId,
@@ -103,7 +117,8 @@ const folgaService = {
   deletarFolga,
   aprovar,
   negar,
-  cadastrarHistorico,  
+  cadastrarHistorico,
+  validarDataUltimaFolga,  // ✅ ADICIONAR
 };
 
 export default folgaService;
